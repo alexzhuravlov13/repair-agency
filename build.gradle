@@ -24,6 +24,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+
+
 	// https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/javax.servlet.jsp.jstl-api
 	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
 
@@ -31,10 +33,27 @@ dependencies {
 	compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.41'
 
 
+	// https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
+	compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.0.Final'
+
+	compile group: 'org.webjars', name: 'jquery', version: '3.4.1'
+
+	compile group: 'org.webjars', name: 'bootstrap', version: '4.4.1'
+
+	compile group: 'org.webjars', name: 'popper.js', version: '1.15.0'
+
+	compile group: 'org.springframework.security', name: 'spring-security-taglibs'
+
+	compile("org.springframework.boot:spring-boot-starter-security")
+
 	compileOnly 'org.projectlombok:lombok'
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	runtimeOnly 'mysql:mysql-connector-java'
+
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

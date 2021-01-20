@@ -1,6 +1,6 @@
+com/zhuravlov/repairagency/controller/MainPageController.java
+ com.zhuravlov.repairagency.controller.MainPageController
 com/zhuravlov/repairagency/config/WebConfigMvc.java
  com.zhuravlov.repairagency.config.WebConfigMvc
 com/zhuravlov/repairagency/RepairAgencyApplication.java
  com.zhuravlov.repairagency.RepairAgencyApplication
-com/zhuravlov/repairagency/controller/MainPageController.java
- com.zhuravlov.repairagency.controller.MainPageController
