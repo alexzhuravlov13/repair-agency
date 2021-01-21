@@ -1,8 +1,8 @@
 package com.zhuravlov.repairagency.service;
 
-import com.hillel.bugtracker.model.RoleEntity;
-import com.hillel.bugtracker.model.UserEntity;
-import com.hillel.bugtracker.repository.UserRepository;
+import com.zhuravlov.repairagency.entity.RoleEntity;
+import com.zhuravlov.repairagency.entity.UserEntity;
+import com.zhuravlov.repairagency.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,14 +25,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByEmail(username);
-        if (user == null) throw new UsernameNotFoundException(username);
+        UserEntity userEntity = userRepository.findByEmail(username);
+        if (userEntity == null) throw new UsernameNotFoundException(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (RoleEntity role : user.getRoles()) {
+        for (RoleEntity role : userEntity.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
-        return new User(user.getEmail(), user.getPassword(), grantedAuthorities);
+        return new User(userEntity.getEmail(), userEntity.getPassword(), grantedAuthorities);
     }
 }

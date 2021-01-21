@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RepairAgencyApplication {
 
 
-	public static void main(String[] args) {
-		SpringApplication.run(RepairAgencyApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RepairAgencyApplication.class, args);
+    }
 
 }
