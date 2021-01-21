@@ -37,7 +37,7 @@ public class SecurityService {
 
         if (token.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(token);
-            log.info(String.format("Autologin success for user %s", username));
+            log.info(String.format("Auto-login success for user %s", username));
         }
     }
 

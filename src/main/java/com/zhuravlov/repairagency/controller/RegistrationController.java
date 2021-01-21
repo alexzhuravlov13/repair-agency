@@ -32,14 +32,11 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String registration(@ModelAttribute("userForm") UserEntity userEntity, BindingResult bindingResult) {
 
-        // TODO: 11.01.2020 userValidator
-
         if (bindingResult.hasErrors()) {
             return "registration";
         }
 
         userService.addUser(userEntity);
-        //securityService.autoLogin(userEntity.getEmail(), userEntity.getPasswordConfirm());
 
         return "redirect:/login";
     }

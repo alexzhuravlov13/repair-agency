@@ -1,6 +1,9 @@
 package com.zhuravlov.repairagency.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -8,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 public class UserEntity {
@@ -25,6 +29,7 @@ public class UserEntity {
     private String lastName;
 
     @Email(message = "invalid email format")
+    @Column(unique = true)
     @NotBlank(message = "email is required")
     @NonNull
     private String email;

@@ -5,6 +5,7 @@ import com.zhuravlov.repairagency.entity.UserEntity;
 import com.zhuravlov.repairagency.repository.RoleRepository;
 import com.zhuravlov.repairagency.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -43,7 +45,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserEntity getUser(int id) {
-        return userRepository.findById(id).get();
+        Optional<UserEntity> userByIdOptional = userRepository.findById(id);
+        if (userByIdOptional.isEmpty()) {
+            throw new UsernameNotFoundException("User id:" + id + " not found");
+        }
+        return userByIdOptional.get();
     }
 
     @Override

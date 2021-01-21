@@ -1,8 +1,6 @@
 package com.zhuravlov.repairagency.service;
 
 
-
-
 import com.zhuravlov.repairagency.entity.UserEntity;
 
 import java.util.List;

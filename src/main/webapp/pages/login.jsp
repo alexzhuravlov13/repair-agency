@@ -1,59 +1,62 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="jstlC" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Log in with your account</title>
 
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
 <div class="container">
-    <form:form method="POST" action="${contextPath}/login" class="form-signin">
-        <h2 class="form-heading">Log in</h2>
-        <div class="form-group ">
-            <input name="username" type="text" class="form-control" placeholder="Username"
-                   autofocus="true"/>
-            <input name="password" type="password" class="form-control" placeholder="Password"/>
-        </div>
 
-        <div class="form-group">
+    <springForm:form method="POST" action="/login"
+                     class="mx-auto p-3 m-3" style="width: 50%; background-color: #eee;">
+        <h2>Log in</h2>
+        <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input name="email" type="email" class="form-control" id="inputEmail3">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+                <input name="password" type="password" class="form-control" id="inputPassword3">
+            </div>
+        </div>
+        <div class="row mb-3">
             <div class="col-xs-15">
                 <div>
                     <!-- Check for login error -->
-                    <c:if test="${param.error != null}">
+                    <jstlC:if test="${param.error != null}">
                         <div class="alert alert-danger col-xs-offset-1 col-xs-10">
                             <span>${error}</span>
                         </div>
-                    </c:if>
+                    </jstlC:if>
                     <!-- Check for logout -->
-                    <c:if test="${param.logout != null}">
+                    <jstlC:if test="${param.logout != null}">
                         <div class="alert alert-success col-xs-offset-1 col-xs-10">
                             <span>${message}</span>
                         </div>
-                    </c:if>
+                    </jstlC:if>
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log In</button>
-            <h4 class="text-center"><a href="${contextPath}/registration">Create an account</a></h4>
+        <div class="row mb-3">
+            <div class="col text-center">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
         </div>
-
-
-    </form:form>
+        <div class="row mb-3">
+            <h4 class="text-center"><a href="/registration">Create an account</a></h4>
+        </div>
+    </springForm:form>
 </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>
