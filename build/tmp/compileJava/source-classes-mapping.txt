@@ -6,12 +6,12 @@ com/zhuravlov/repairagency/RepairAgencyApplication.java
  com.zhuravlov.repairagency.RepairAgencyApplication
 com/zhuravlov/repairagency/service/SecurityService.java
  com.zhuravlov.repairagency.service.SecurityService
-com/zhuravlov/repairagency/config/WebConfigMvc.java
- com.zhuravlov.repairagency.config.WebConfigMvc
-com/zhuravlov/repairagency/entity/RoleEntity.java
- com.zhuravlov.repairagency.entity.RoleEntity
 com/zhuravlov/repairagency/repository/RoleRepository.java
  com.zhuravlov.repairagency.repository.RoleRepository
+com/zhuravlov/repairagency/entity/RoleEntity.java
+ com.zhuravlov.repairagency.entity.RoleEntity
+com/zhuravlov/repairagency/config/WebConfigMvc.java
+ com.zhuravlov.repairagency.config.WebConfigMvc
 com/zhuravlov/repairagency/controller/RegistrationController.java
  com.zhuravlov.repairagency.controller.RegistrationController
 com/zhuravlov/repairagency/entity/UserEntity.java
