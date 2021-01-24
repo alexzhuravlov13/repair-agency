@@ -29,7 +29,7 @@ public class RepairFormController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ModelAndView getTicketsList(String userId) {
+    public ModelAndView getRepairFormList() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         int id = userService.findByUsername(userName).getUserId();
 
@@ -72,6 +72,4 @@ public class RepairFormController {
 
         return modelAndView;
     }
-
-
 }
