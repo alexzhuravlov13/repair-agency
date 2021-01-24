@@ -23,4 +23,9 @@ public class RoleEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<UserEntity> users;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

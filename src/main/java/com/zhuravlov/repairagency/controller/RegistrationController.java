@@ -11,6 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
 
 @Controller
 public class RegistrationController {
@@ -23,22 +26,29 @@ public class RegistrationController {
 
 
     @GetMapping("/registration")
-    public String registration(Model model) {
+    public String registration(Model model, @RequestParam(required = false) String error) {
         model.addAttribute("userForm", new UserEntity());
-
+        if (error != null) {
+            model.addAttribute("error", "Email already registered");
+        }
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") UserEntity userEntity, BindingResult bindingResult) {
+    public String registration(@ModelAttribute("userForm") @Valid UserEntity userEntity, BindingResult bindingResult, String error) {
 
         if (bindingResult.hasErrors()) {
             return "registration";
         }
 
-        userService.addUser(userEntity);
+        try {
+            userService.addUser(userEntity);
+        } catch (Exception e) {
+            return "redirect:registration?error";
+        }
 
         return "redirect:/login";
+
     }
 
     @GetMapping("/login")
