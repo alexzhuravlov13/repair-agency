@@ -23,10 +23,14 @@
                     <a class="nav-link" href="/"><spring:message code="navbar.home"/></a>
                 </li>
                 <li class="nav-item active">
-                    <sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_BOSS')">
+                    <sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')">
                         <a class="nav-link" href="${pageContext.request.contextPath}/users/list"><spring:message
                                 code="navbar.users"/></a>
                     </sec:authorize>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/repairs/list"><spring:message
+                            code="navbar.RepairFormList"/></a>
                 </li>
                 <li class="nav-item active">
                     <span class="nav-link"><spring:message code="changeLocale"/>:</span>

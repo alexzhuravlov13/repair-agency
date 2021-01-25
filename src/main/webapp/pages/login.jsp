@@ -46,7 +46,7 @@
                     <!-- Check for logout -->
                     <jstlC:if test="${param.logout != null}">
                         <div class="alert alert-success col-xs-offset-1 col-xs-10">
-                            <span>$<spring:message code="login.message"/></span>
+                            <span><spring:message code="login.message"/></span>
                         </div>
                     </jstlC:if>
                 </div>

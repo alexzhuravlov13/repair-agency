@@ -37,7 +37,7 @@ public class RepairFormController {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("repairForms", usersRepairForms);
-        modelAndView.setViewName("repairFormsList");
+        modelAndView.setViewName("repaiFormUserList");
         return modelAndView;
     }
 
@@ -55,13 +55,15 @@ public class RepairFormController {
         if (bindingResult.hasErrors()) {
             return "repairFormAdd";
         }
-        RepairFormEntity formFromDto = RepairFormConverter.getFormFromDto(repairFormDto);
+        RepairFormConverter repairFormConverter = new RepairFormConverter();
+        RepairFormEntity formFromDto = repairFormConverter.getFormFromDto(repairFormDto);
         repairFormService.addRepairForm(formFromDto);
-        return "redirect:repairFormsList";
+        return "redirect:repaiFormUserList";
     }
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/{repairFormId}")
+    @GetMapping("/view/{repairFormId}")
     public ModelAndView showTicket(@PathVariable String repairFormId) {
         RepairFormEntity repairForm = repairFormService.getRepairForm(Integer.parseInt(repairFormId));
 
