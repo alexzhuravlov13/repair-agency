@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 
 @Controller
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
 @RequestMapping("/users")
 public class UsersController {
 

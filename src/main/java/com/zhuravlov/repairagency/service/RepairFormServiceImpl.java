@@ -37,4 +37,9 @@ public class RepairFormServiceImpl implements RepairFormService {
         }
         return repairFormOptional.get();
     }
+
+    @Override
+    public List<RepairFormEntity> getRepairForms() {
+        return repository.findAll();
+    }
 }

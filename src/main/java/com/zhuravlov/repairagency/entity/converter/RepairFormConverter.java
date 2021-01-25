@@ -3,8 +3,12 @@ package com.zhuravlov.repairagency.entity.converter;
 import com.zhuravlov.repairagency.entity.DTO.RepairFormDto;
 import com.zhuravlov.repairagency.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.service.UserService;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RepairFormConverter {
 
     @Autowired
@@ -13,6 +17,8 @@ public class RepairFormConverter {
     public RepairFormEntity getFormFromDto(RepairFormDto repairFormDto) {
         RepairFormEntity repairForm = new RepairFormEntity();
         repairForm.setAuthor(userService.getUser(repairFormDto.getAuthorId()));
+        repairForm.setShortDescription(repairFormDto.getShortDescription());
+        repairForm.setCar(repairFormDto.getCar());
         repairForm.setCreationDate(repairFormDto.getCreationDate());
         repairForm.setDescription(repairFormDto.getDescription());
         return repairForm;

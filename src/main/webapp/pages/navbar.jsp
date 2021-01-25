@@ -33,6 +33,12 @@
                             code="navbar.RepairFormList"/></a>
                 </li>
                 <li class="nav-item active">
+                    <sec:authorize access="hasRole('ROLE_MANAGER')">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/repairs/manager/list"><spring:message
+                                code="navbar.AllRepairFormList"/></a>
+                    </sec:authorize>
+                </li>
+                <li class="nav-item active">
                     <span class="nav-link"><spring:message code="changeLocale"/>:</span>
                 <li class="dropdown ms-3">
                     <select class="form-select form-select-sm" id="locales">

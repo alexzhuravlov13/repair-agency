@@ -20,7 +20,7 @@ public class RepairFormEntity {
     LocalDateTime creationDate;
 
     @OneToOne
-    @JoinColumn(name = "users")
+    @JoinColumn(name = "author_id")
     UserEntity author;
 
     String car;

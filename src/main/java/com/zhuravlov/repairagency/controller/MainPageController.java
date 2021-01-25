@@ -10,7 +10,7 @@ public class MainPageController {
 
     @GetMapping
     public String getIndexPage() {
-        return "repaiFormUserList";
+        return "redirect:/repairs/list";
     }
 
 }

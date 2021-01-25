@@ -10,4 +10,6 @@ public interface RepairFormService {
     void addRepairForm(RepairFormEntity formFromDto);
 
     RepairFormEntity getRepairForm(int id);
+
+    List<RepairFormEntity> getRepairForms();
 }

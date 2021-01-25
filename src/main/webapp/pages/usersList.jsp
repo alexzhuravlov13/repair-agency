@@ -37,7 +37,7 @@
                 <td> ${user.lastName} </td>
                 <td> ${user.roles} </td>
                 <td>
-                    <button type="button" class="btn btn-primary"
+                    <button type="button" class="btn btn-info"
                             onclick="location.href='/users/edit?userId=${user.userId}'">
                         <spring:message code="userEdit.h"/></button>
                 </td>
