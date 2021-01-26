@@ -59,7 +59,7 @@ public class InsertAdminAndRoles implements InitializingBean {
         repairFormEntity2.setLastModifiedDate(LocalDateTime.now());
         repairFormEntity2.setAuthor(userService.getUser(3));
         repairFormEntity2.setDescription("change engine to 16rik");
-        repairFormEntity2.setStatus(Status.NEW);
+        repairFormEntity2.setStatus(Status.READY);
 
 
         repairFormService.addRepairForm(repairFormEntity2);

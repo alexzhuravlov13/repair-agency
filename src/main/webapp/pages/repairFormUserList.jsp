@@ -16,6 +16,7 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div class="container mt-3">
+    <h3><spring:message code="users.Amount"/>: ${amount}</h3>
     <h3><spring:message code="repairForm.title"/></h3>
     <table class="table">
         <thead>
@@ -47,6 +48,12 @@
                     <button type="button" class="btn btn-outline-info"
                             onclick="location.href='/repairs/view/${repairForm.id}'">
                         <spring:message code="repairForm.view"/></button>
+
+                    <c:if test="${repairForm.status eq statusReady}">
+                        <button type="button" class="btn btn-outline-primary"
+                                onclick="location.href='/repairs/review/${repairForm.id}'">
+                            <spring:message code="repairForm.review"/></button>
+                    </c:if>
                 </td>
                 <sec:authorize access="hasRole('ROLE_MANAGER') or hasRole('ROLE_REPAIRMAN')">
                     <td>

@@ -15,7 +15,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserEntity {
 
-    boolean isDisabled;
     BigDecimal amount = BigDecimal.valueOf(0);
     @Id
     @GeneratedValue

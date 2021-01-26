@@ -30,6 +30,8 @@ public class RepairFormEntity {
 
     String description;
 
+    String feedback;
+
     int repairmanId;
 
     @Enumerated(EnumType.STRING)

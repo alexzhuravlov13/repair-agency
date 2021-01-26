@@ -61,6 +61,12 @@
             </div>
         </div>
 
+        <div class="row mb-3">
+            <div class="col-xs-15">
+                <strong><spring:message code="repairForm.review"/></strong>: ${repairForm.feedback}
+            </div>
+        </div>
+
         <spring:message code="repairFormView.ok" var="ok"/>
         <div class="row mb-3">
             <div class="col text-center">

@@ -24,7 +24,12 @@
             <th scope="col">Email</th>
             <th scope="col"><spring:message code="users.First"/></th>
             <th scope="col"><spring:message code="users.Last"/></th>
-            <th scope="col"><spring:message code="users.Roles"/></th>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <th scope="col"><spring:message code="users.Roles"/></th>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_MANAGER')">
+                <th scope="col"><spring:message code="users.Amount"/></th>
+            </sec:authorize>
             <th scope="col"><spring:message code="users.Action"/></th>
         </tr>
         </thead>
@@ -35,12 +40,26 @@
                 <td> ${user.email} </td>
                 <td> ${user.firstName} </td>
                 <td> ${user.lastName} </td>
-                <td> ${user.roles} </td>
-                <td>
-                    <button type="button" class="btn btn-outline-info"
-                            onclick="location.href='/users/edit?userId=${user.userId}'">
-                        <spring:message code="userEdit.h"/></button>
-                </td>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <td> ${user.roles} </td>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_MANAGER')">
+                    <td> ${user.amount} </td>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <td>
+                        <button type="button" class="btn btn-outline-info"
+                                onclick="location.href='/users/edit?userId=${user.userId}'">
+                            <spring:message code="userEdit.h"/></button>
+                    </td>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_MANAGER')">
+                    <td>
+                        <button type="button" class="btn btn-outline-info"
+                                onclick="location.href='/users/changeAmount?userId=${user.userId}'">
+                            <spring:message code="userEdit.changeAmount"/></button>
+                    </td>
+                </sec:authorize>
             </tr>
         </c:forEach>
         </tbody>

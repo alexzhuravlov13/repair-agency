@@ -59,6 +59,7 @@ public class UsersController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/edit")
     public String editUserForm(Model model, @RequestParam("userId") int userId) {
         model.addAttribute("userAttribute", userService.getUser(userId));
@@ -67,6 +68,7 @@ public class UsersController {
         return "userEdit";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/editUser")
     public String updateUser(@ModelAttribute("userAttribute") @Validated UserEntity userEntity) {
         UserEntity userFromDb = userService.findByUsername(userEntity.getEmail());
@@ -79,6 +81,23 @@ public class UsersController {
         return "redirect:/users/list";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
+    @GetMapping("/changeAmount")
+    public String changeAmountUserForm(Model model, @RequestParam("userId") int userId) {
+        model.addAttribute("userAttribute", userService.getUser(userId));
+        return "userChangeAmount";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
+    @PostMapping("/changeAmount")
+    public String changeUserAmount(@ModelAttribute("userAttribute") @Validated UserEntity userEntity) {
+        UserEntity userFromDb = userService.findByUsername(userEntity.getEmail());
+        userFromDb.setAmount(userFromDb.getAmount().add(userEntity.getAmount()));
+        userService.updateUser(userFromDb);
+        return "redirect:/users/list";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.GET, value = "/deleteUser")
     public String deleteUser(@RequestParam("userId") int userId) {
         userService.deleteUser(userId);
