@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -36,6 +37,7 @@ public class RepairFormEntity {
 
     LocalDateTime lastModifiedDate;
 
+    @Min(0)
     BigDecimal price = BigDecimal.valueOf(0);
 
     @Override

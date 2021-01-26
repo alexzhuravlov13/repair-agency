@@ -7,6 +7,7 @@ import com.zhuravlov.repairagency.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,10 @@ public class UsersController {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @GetMapping("/add")
     public String addUserForm(Model model) {
@@ -66,6 +71,7 @@ public class UsersController {
     public String updateUser(@ModelAttribute("userAttribute") @Validated UserEntity userEntity) {
         UserEntity userFromDb = userService.findByUsername(userEntity.getEmail());
         userFromDb.setEmail(userEntity.getEmail());
+        userFromDb.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
         userFromDb.setFirstName(userEntity.getFirstName());
         userFromDb.setLastName(userEntity.getLastName());
         userFromDb.setRoles(userEntity.getRoles());

@@ -22,6 +22,7 @@
         <tr>
             <th scope="col">Id</th>
             <th scope="col"><spring:message code="repairForm.Created"/></th>
+            <th scope="col"><spring:message code="repairForm.Author"/></th>
             <th scope="col"><spring:message code="repairForm.car"/></th>
             <th scope="col"><spring:message code="repairForm.ShortDescription"/></th>
             <th scope="col"><spring:message code="repairForm.Status"/></th>
@@ -37,6 +38,7 @@
             <tr>
                 <td> ${repairForm.id} </td>
                 <td> ${repairForm.creationDate.toLocalDate()} ${repairForm.creationDate.toLocalTime()}</td>
+                <td> ${repairForm.author.firstName} ${repairForm.author.lastName}</td>
                 <td> ${repairForm.car} </td>
                 <td> ${repairForm.shortDescription} </td>
                 <td> ${repairForm.status} </td>

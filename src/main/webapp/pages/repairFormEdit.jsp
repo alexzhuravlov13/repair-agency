@@ -24,6 +24,12 @@
 
         <div class="row mb-3">
             <div class="col-xs-15">
+                <strong><spring:message code="repairForm.Author"/></strong>: ${repairFormAttribute.author.firstName} ${repairFormAttribute.author.lastName}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-xs-15">
                 <strong><spring:message
                         code="repairForm.Created"/></strong>: ${repairFormAttribute.creationDate.toLocalDate()}
             </div>

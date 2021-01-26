@@ -123,7 +123,6 @@ public class RepairFormController {
         int idFromDbByAuthentication = getIdFromDbByAuthentication();
         UserEntity user = userService.getUser(idFromDbByAuthentication);
         Set<RoleEntity> userRoles = user.getRoles();
-        log.info("#ROLES#" + userRoles);
 
         List<Status> statuses = null;
         isManager = false;
@@ -140,7 +139,6 @@ public class RepairFormController {
         List<UserEntity> repairmans = userService.findUsersByRole("ROLE_REPAIRMAN");
 
         model.addAttribute("statuses", statuses);
-        log.info("#####" + statuses);
         model.addAttribute("repairFormAttribute", repairForm);
         model.addAttribute("repairmans", repairmans);
         if (isManager) {
