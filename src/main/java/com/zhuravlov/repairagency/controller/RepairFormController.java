@@ -2,7 +2,9 @@ package com.zhuravlov.repairagency.controller;
 
 import com.zhuravlov.repairagency.entity.DTO.RepairFormDto;
 import com.zhuravlov.repairagency.entity.RepairFormEntity;
+import com.zhuravlov.repairagency.entity.RoleEntity;
 import com.zhuravlov.repairagency.entity.Status;
+import com.zhuravlov.repairagency.entity.UserEntity;
 import com.zhuravlov.repairagency.entity.converter.RepairFormConverter;
 import com.zhuravlov.repairagency.service.RepairFormService;
 import com.zhuravlov.repairagency.service.UserService;
@@ -18,12 +20,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/repairs")
 @Slf4j
 public class RepairFormController {
+    private boolean isManager;
 
     @Autowired
     private RepairFormService repairFormService;
@@ -55,6 +60,18 @@ public class RepairFormController {
     @GetMapping("/manager/list")
     public ModelAndView getAllRepairForms() {
         List<RepairFormEntity> usersRepairForms = repairFormService.getRepairForms();
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("repairForms", usersRepairForms);
+        modelAndView.setViewName("repairFormUserList");
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_REPAIRMAN')")
+    @GetMapping("/repairman/list")
+    public ModelAndView getRepairmanForms() {
+        int idFromDbByAuthentication = getIdFromDbByAuthentication();
+        List<RepairFormEntity> usersRepairForms = repairFormService.findRepairmansForms(idFromDbByAuthentication);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("repairForms", usersRepairForms);
@@ -98,4 +115,54 @@ public class RepairFormController {
 
         return modelAndView;
     }
+
+    @PreAuthorize("hasAuthority('ROLE_MANAGER') or hasAuthority('ROLE_REPAIRMAN')")
+    @GetMapping("/edit/{repairFormId}")
+    public String editRepairForm(Model model, @PathVariable String repairFormId) {
+
+        int idFromDbByAuthentication = getIdFromDbByAuthentication();
+        UserEntity user = userService.getUser(idFromDbByAuthentication);
+        Set<RoleEntity> userRoles = user.getRoles();
+        log.info("#ROLES#" + userRoles);
+
+        List<Status> statuses = null;
+        isManager = false;
+
+        if (userRoles.contains(new RoleEntity("ROLE_MANAGER"))) {
+            isManager = true;
+            statuses = Arrays.asList(Status.CANCELED, Status.PAID, Status.WAITING_FOR_PAYMENT);
+        } else if (userRoles.contains(new RoleEntity("ROLE_REPAIRMAN"))) {
+            statuses = Arrays.asList(Status.IN_PROGRESS, Status.READY);
+        }
+
+        RepairFormEntity repairForm = repairFormService.getRepairForm(Integer.parseInt(repairFormId));
+
+        List<UserEntity> repairmans = userService.findUsersByRole("ROLE_REPAIRMAN");
+
+        model.addAttribute("statuses", statuses);
+        log.info("#####" + statuses);
+        model.addAttribute("repairFormAttribute", repairForm);
+        model.addAttribute("repairmans", repairmans);
+        if (isManager) {
+            return "repairFormEdit";
+        }
+        return "repairFormRepairman";
+    }
+
+    @PostMapping("/editRepairForm")
+    public String saveEditedRepairForm(Model model, @ModelAttribute("repairFormAttribute")
+    @Validated RepairFormEntity repairFormEntity, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("repairFormAttribute", repairFormEntity);
+            return "repairFormEdit";
+        }
+        repairFormService.addRepairForm(repairFormEntity);
+        if (isManager) {
+            return "redirect:/repairs/manager/list";
+        }
+        return "redirect:/repairs/repairman/list";
+
+    }
+
 }

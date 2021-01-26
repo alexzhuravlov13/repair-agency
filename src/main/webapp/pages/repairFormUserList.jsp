@@ -25,7 +25,11 @@
             <th scope="col"><spring:message code="repairForm.car"/></th>
             <th scope="col"><spring:message code="repairForm.ShortDescription"/></th>
             <th scope="col"><spring:message code="repairForm.Status"/></th>
+            <th scope="col"><spring:message code="repairForm.price"/></th>
             <th scope="col"><spring:message code="users.Action"/></th>
+            <sec:authorize access="hasRole('ROLE_MANAGER') or hasRole('ROLE_REPAIRMAN')">
+                <th scope="col"><spring:message code="users.Action"/></th>
+            </sec:authorize>
         </tr>
         </thead>
         <tbody>
@@ -36,13 +40,22 @@
                 <td> ${repairForm.car} </td>
                 <td> ${repairForm.shortDescription} </td>
                 <td> ${repairForm.status} </td>
+                <td> ${repairForm.price} </td>
                 <td>
                     <button type="button" class="btn btn-outline-info"
                             onclick="location.href='/repairs/view/${repairForm.id}'">
                         <spring:message code="repairForm.view"/></button>
                 </td>
+                <sec:authorize access="hasRole('ROLE_MANAGER') or hasRole('ROLE_REPAIRMAN')">
+                    <td>
+                        <button type="button" class="btn btn-outline-info"
+                                onclick="location.href='/repairs/edit/${repairForm.id}'">
+                            <spring:message code="repairForm.edit"/></button>
+                    </td>
+                </sec:authorize>
             </tr>
         </c:forEach>
+        </tbody>
     </table>
     <button type="button" class="btn btn-primary"
             onclick="location.href='/repairs/add'">

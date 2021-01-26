@@ -18,4 +18,6 @@ public interface UserService {
     void deleteUser(int id);
 
     UserEntity findByUsername(String email);
+
+    List<UserEntity> findUsersByRole(String role);
 }

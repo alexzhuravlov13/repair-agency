@@ -25,6 +25,11 @@ public class RepairFormServiceImpl implements RepairFormService {
     }
 
     @Override
+    public List<RepairFormEntity> findRepairmansForms(int id) {
+        return repository.findRepairFormEntityByRepairmanId(id);
+    }
+
+    @Override
     public void addRepairForm(RepairFormEntity repairForm) {
         repository.save(repairForm);
     }

@@ -19,11 +19,11 @@
     <div class="mx-auto p-5 m-3" style="width: 50%; background-color: #eee;">
         <h2><spring:message code="repairFormView.name"/># ${repairForm.id}</h2>
 
-            <div class="row mb-3">
-                <div class="col-xs-15">
+        <div class="row mb-3">
+            <div class="col-xs-15">
                 <strong><spring:message code="repairForm.Created"/></strong>: ${repairForm.creationDate.toLocalDate()}
-                </div>
             </div>
+        </div>
 
         <div class="row mb-3">
             <div class="col-xs-15">
@@ -60,7 +60,7 @@
             <div class="col text-center">
                 <button type="submit"
                         class="btn btn-success"
-                    onclick="location.href='/repairs/list'">${ok}
+                        onclick="location.href='/repairs/list'">${ok}
                 </button>
             </div>
         </div>

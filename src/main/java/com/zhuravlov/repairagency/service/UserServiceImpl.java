@@ -67,5 +67,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
+    @Override
+    public List<UserEntity> findUsersByRole(String role) {
+        return userRepository.findByRoles_name(role);
+    }
+
 
 }

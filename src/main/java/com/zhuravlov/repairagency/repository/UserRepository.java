@@ -13,4 +13,6 @@ public interface UserRepository extends CrudRepository<UserEntity, Integer> {
     List<UserEntity> findAll();
 
     UserEntity findByEmail(String email);
+
+    List<UserEntity> findByRoles_name(String name);
 }

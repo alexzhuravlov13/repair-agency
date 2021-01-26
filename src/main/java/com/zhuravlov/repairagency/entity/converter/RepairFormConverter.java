@@ -3,8 +3,6 @@ package com.zhuravlov.repairagency.entity.converter;
 import com.zhuravlov.repairagency.entity.DTO.RepairFormDto;
 import com.zhuravlov.repairagency.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.service.UserService;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

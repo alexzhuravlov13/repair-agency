@@ -11,4 +11,6 @@ public interface RepairFormRepository extends JpaRepository<RepairFormEntity, In
 
     List<RepairFormEntity> findRepairFormEntityByAuthor_userId(int id);
 
+    List<RepairFormEntity> findRepairFormEntityByRepairmanId(int id);
+
 }

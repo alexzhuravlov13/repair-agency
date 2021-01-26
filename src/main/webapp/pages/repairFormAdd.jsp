@@ -20,8 +20,8 @@
                      class="mx-auto p-5 m-3" style="width: 50%; background-color: #eee;">
         <h2><spring:message code="repairFormAdd.h"/></h2>
 
-        <springForm:hidden path="creationDate" />
-        <springForm:hidden path="authorId" />
+        <springForm:hidden path="creationDate"/>
+        <springForm:hidden path="authorId"/>
 
         <spring:bind path="car">
             <spring:message code="repairFormAdd.car" var="carPh"/>

@@ -127,6 +127,46 @@ public class InsertAdminAndRoles implements InitializingBean {
                 roleRepository.findByName("ROLE_USER"))));
 
         userService.updateUser(userbyUsername);
+
+        UserEntity repairman1 =
+                new UserEntity(
+                        "Repairman1",
+                        "Master",
+                        "master1@gmail.com",
+                        "111111");
+
+        UserEntity repairman1byUsername = userService.findByUsername("master1@gmail.com");
+
+        if (repairman1byUsername == null) {
+            userService.addUser(repairman1);
+        }
+
+        repairman1byUsername = userService.findByUsername("master1@gmail.com");
+
+        repairman1byUsername.setRoles(new HashSet<>(Arrays.asList(
+                roleRepository.findByName("ROLE_REPAIRMAN"))));
+
+        userService.updateUser(repairman1byUsername);
+
+        UserEntity repairman2 =
+                new UserEntity(
+                        "Repairman2",
+                        "Master2",
+                        "master2@gmail.com",
+                        "111111");
+
+        UserEntity repairman2byUsername = userService.findByUsername("master2@gmail.com");
+
+        if (repairman2byUsername == null) {
+            userService.addUser(repairman2);
+        }
+
+        repairman2byUsername = userService.findByUsername("master2@gmail.com");
+
+        repairman2byUsername.setRoles(new HashSet<>(Arrays.asList(
+                roleRepository.findByName("ROLE_REPAIRMAN"))));
+
+        userService.updateUser(repairman2byUsername);
     }
 
     private void initRoles() {

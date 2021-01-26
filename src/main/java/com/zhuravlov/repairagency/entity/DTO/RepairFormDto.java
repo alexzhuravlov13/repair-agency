@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.lang.NonNull;
 
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Data

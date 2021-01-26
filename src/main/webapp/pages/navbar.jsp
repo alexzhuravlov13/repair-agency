@@ -34,7 +34,15 @@
                 </li>
                 <li class="nav-item active">
                     <sec:authorize access="hasRole('ROLE_MANAGER')">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/repairs/manager/list"><spring:message
+                        <a class="nav-link"
+                           href="${pageContext.request.contextPath}/repairs/manager/list"><spring:message
+                                code="navbar.AllRepairFormList"/></a>
+                    </sec:authorize>
+                </li>
+                <li class="nav-item active">
+                    <sec:authorize access="hasRole('ROLE_REPAIRMAN')">
+                        <a class="nav-link"
+                           href="${pageContext.request.contextPath}/repairs/repairman/list"><spring:message
                                 code="navbar.AllRepairFormList"/></a>
                     </sec:authorize>
                 </li>
