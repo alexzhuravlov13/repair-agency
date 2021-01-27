@@ -56,11 +56,6 @@ public class RepairFormController {
         return modelAndView;
     }
 
-    private int getIdFromDbByAuthentication() {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userService.findByUsername(userName).getUserId();
-    }
-
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     @GetMapping("/manager/list")
     public ModelAndView getAllRepairForms() {
@@ -86,10 +81,9 @@ public class RepairFormController {
 
     @GetMapping("/add")
     public String addRepairForm(Model model) {
-        int userId = getIdFromDbByAuthentication();
-        RepairFormDto repairFormDto = new RepairFormDto();
-        repairFormDto.setAuthorId(userId);
-        repairFormDto.setCreationDate(LocalDateTime.now());
+        RepairFormDto repairFormDto = new RepairFormDto(
+                LocalDateTime.now(),
+                getIdFromDbByAuthentication());
         model.addAttribute("repairFormAttribute", repairFormDto);
         return "repairFormAdd";
     }
@@ -191,6 +185,8 @@ public class RepairFormController {
         return "redirect:/repairs/list";
     }
 
-
-
+    private int getIdFromDbByAuthentication() {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userService.findByUsername(userName).getUserId();
+    }
 }

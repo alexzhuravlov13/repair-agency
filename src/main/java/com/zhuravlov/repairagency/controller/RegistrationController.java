@@ -25,7 +25,7 @@ public class RegistrationController {
 
     @GetMapping("/l8n")
     public String changeLocale(){
-        return "redirect:/login";
+        return "redirect:/";
     }
 
 
