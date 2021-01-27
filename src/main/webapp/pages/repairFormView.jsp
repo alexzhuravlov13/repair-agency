@@ -17,7 +17,7 @@
 <jsp:include page="navbar.jsp"/>
 <div class="container">
     <div class="mx-auto p-5 m-3" style="width: 50%; background-color: #eee;">
-        <h2><spring:message code="repairFormView.name"/># ${repairForm.id}</h2>
+        <h2><spring:message code="repairFormView.name"/></h2>
 
         <div class="row mb-3">
             <div class="col-xs-15">

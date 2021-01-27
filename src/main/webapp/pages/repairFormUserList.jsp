@@ -18,10 +18,9 @@
 <div class="container mt-3">
     <h3><spring:message code="users.Amount"/>: ${amount}</h3>
     <h3><spring:message code="repairForm.title"/></h3>
-    <table class="table">
+    <table class="table table-striped table-light">
         <thead>
         <tr>
-            <th scope="col">Id</th>
             <th scope="col"><spring:message code="repairForm.Created"/></th>
             <th scope="col"><spring:message code="repairForm.Author"/></th>
             <th scope="col"><spring:message code="repairForm.car"/></th>
@@ -37,8 +36,7 @@
         <tbody>
         <c:forEach var="repairForm" items="${repairForms}">
             <tr>
-                <td> ${repairForm.id} </td>
-                <td> ${repairForm.creationDate.toLocalDate()} ${repairForm.creationDate.toLocalTime()}</td>
+                <td> ${repairForm.creationDate.toLocalDate()}</td>
                 <td> ${repairForm.author.firstName} ${repairForm.author.lastName}</td>
                 <td> ${repairForm.car} </td>
                 <td> ${repairForm.shortDescription} </td>

@@ -81,6 +81,7 @@ public class RepairFormController {
 
     @GetMapping("/add")
     public String addRepairForm(Model model) {
+        //TODO:make a builder
         RepairFormDto repairFormDto = new RepairFormDto(
                 LocalDateTime.now(),
                 getIdFromDbByAuthentication());
@@ -110,7 +111,6 @@ public class RepairFormController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("repairForm", repairForm);
         modelAndView.setViewName("repairFormView");
-
         return modelAndView;
     }
 
@@ -161,6 +161,7 @@ public class RepairFormController {
             }
             repairFormEntity.getAuthor().setAmount(newAmount);
         }
+        repairFormEntity.setLastModifiedDate(LocalDateTime.now());
         repairFormService.addRepairForm(repairFormEntity);
         if (isManager) {
             return "redirect:/repairs/manager/list";

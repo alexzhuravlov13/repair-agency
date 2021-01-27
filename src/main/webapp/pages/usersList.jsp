@@ -20,7 +20,6 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Id</th>
             <th scope="col">Email</th>
             <th scope="col"><spring:message code="users.First"/></th>
             <th scope="col"><spring:message code="users.Last"/></th>
@@ -36,7 +35,6 @@
         <tbody>
         <c:forEach var="user" items="${users}">
             <tr>
-                <td> ${user.userId} </td>
                 <td> ${user.email} </td>
                 <td> ${user.firstName} </td>
                 <td> ${user.lastName} </td>

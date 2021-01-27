@@ -16,5 +16,8 @@ public class RepairAgencyApplication {
     //TODO:spring exception handler
     //TODO:service returns entity (for tests), optionals or exceptions
     //TODO:refactor controllers, move business logic to services
+    //TODO:pagination
+    //TODO:don't show id????
     //TODO:transaction when reading and writing an object (using builder) or jpql for updating the fields
+    //TODO:lastModified
 }

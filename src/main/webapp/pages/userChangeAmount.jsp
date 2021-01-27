@@ -22,12 +22,6 @@
 
         <div class="row mb-3">
             <div class="col-xs-15">
-                <strong>Id</strong>: ${userAttribute.userId}
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-xs-15">
                 <strong><spring:message code="registration.FirstName"/></strong>: ${userAttribute.firstName}
             </div>
             <div class="col-xs-15">

@@ -19,7 +19,7 @@
 <div class="container">
     <springform:form method="POST" action="/repairs/saveReview" modelAttribute="repairFormAttribute"
                      class="mx-auto p-5 m-3" style="width: 50%; background-color: #eee;">
-        <h2><spring:message code="repairFormView.name"/># ${repairFormAttribute.id}</h2>
+        <h2><spring:message code="repairFormView.name"/></h2>
         <springForm:hidden path="id"/>
 
         <div class="row mb-3">
