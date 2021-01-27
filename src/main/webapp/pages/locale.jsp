@@ -42,7 +42,7 @@
         $("#locales").change(function () {
             const selectedOption = $('#locales').val();
             if (selectedOption !== '') {
-                window.location.replace('/l8n?lang=' + selectedOption);
+                window.location.replace('?lang=' + selectedOption);
             }
         });
     });

@@ -23,12 +23,6 @@ public class RegistrationController {
     @Autowired
     private SecurityService securityService;
 
-    @GetMapping("/l8n")
-    public String changeLocale(){
-        return "redirect:/";
-    }
-
-
     @GetMapping("/registration")
     public String registration(Model model, @RequestParam(required = false) String error) {
         model.addAttribute("userForm", new UserEntity());
