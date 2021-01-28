@@ -1,18 +1,21 @@
 package com.zhuravlov.repairagency.service;
 
 import com.zhuravlov.repairagency.entity.RepairFormEntity;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface RepairFormService {
-    List<RepairFormEntity> findUserRepairForms(int id);
 
-    List<RepairFormEntity> findRepairmansForms(int id);
+    Page<RepairFormEntity> findAllPaginated(int pageNo, int pageSize);
 
+    Page<RepairFormEntity> findUserRepairFormsPaginated(int id, int pageNo, int pageSize);
+
+    Page<RepairFormEntity> findRepairmanForms(int id, int pageNo, int pageSize);
 
     void addRepairForm(RepairFormEntity formFromDto);
 
     RepairFormEntity getRepairForm(int id);
 
-    List<RepairFormEntity> getRepairForms();
+    void saveAll(List<RepairFormEntity> repairForms);
 }

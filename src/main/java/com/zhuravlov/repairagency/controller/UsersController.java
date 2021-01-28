@@ -1,11 +1,13 @@
 package com.zhuravlov.repairagency.controller;
 
+import com.zhuravlov.repairagency.controller.Util.ControllerUtil;
 import com.zhuravlov.repairagency.entity.RoleEntity;
 import com.zhuravlov.repairagency.entity.UserEntity;
 import com.zhuravlov.repairagency.repository.RoleRepository;
 import com.zhuravlov.repairagency.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,10 @@ import java.util.List;
 @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MANAGER')")
 @RequestMapping("/users")
 public class UsersController {
+    String userName;
+
+    @Autowired
+    private ControllerUtil controllerUtil;
 
     @Autowired
     private UserService userService;
@@ -50,13 +56,27 @@ public class UsersController {
         }
     }
 
+
     @GetMapping("/list")
-    public ModelAndView getUsersList() {
-        List<UserEntity> usersList = userService.getUsers();
+    public ModelAndView getUsersList(Model model) {
+        userName = controllerUtil.getUserName();
+        log.info("--User:" + userName + " entered /users/list endpoint");
+        return getUsersListPaginated(1);
+    }
+
+    @GetMapping("/list/page/{pageNo}")
+    public ModelAndView getUsersListPaginated(@PathVariable(value = "pageNo") int pageNo) {
+        log.info("--User:" + userName + " entered /users/list/page/" + pageNo + " endpoint");
+        int pageSize = 10;
+
+        Page<UserEntity> page = userService.findAllPaginated(pageNo, pageSize);
+        List<UserEntity> userList = page.getContent();
+
+        String basePath = "/users/list";
+
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("users", usersList);
         modelAndView.setViewName("usersList");
-        return modelAndView;
+        return controllerUtil.getModelAndViewAttributesForUserList(basePath, pageNo, page, userList, modelAndView);
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")

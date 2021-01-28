@@ -18,9 +18,15 @@
 <div class="container mt-3">
     <h3><spring:message code="users.Amount"/>: ${amount}</h3>
     <h3><spring:message code="repairForm.title"/></h3>
+
+    <button type="button" class="btn btn-primary m-3"
+            onclick="location.href='/repairs/add'">
+        <spring:message code="repairForm.add"/></button>
+
     <table class="table table-striped table-light">
         <thead>
         <tr>
+            <th scope="col">#</th>
             <th scope="col"><spring:message code="repairForm.Created"/></th>
             <th scope="col"><spring:message code="repairForm.Author"/></th>
             <th scope="col"><spring:message code="repairForm.car"/></th>
@@ -34,14 +40,24 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="repairForm" items="${repairForms}">
+
+        <c:forEach var="repairForm" items="${repairForms}" varStatus="i">
             <tr>
-                <td> ${repairForm.creationDate.toLocalDate()}</td>
-                <td> ${repairForm.author.firstName} ${repairForm.author.lastName}</td>
-                <td> ${repairForm.car} </td>
-                <td> ${repairForm.shortDescription} </td>
-                <td> ${repairForm.status} </td>
-                <td> ${repairForm.price} </td>
+                <c:choose>
+                    <c:when test="${currentPage != 1}">
+                        <td>${i.index+1+(currentPage-1)*10}</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>${i.index+1}</td>
+                    </c:otherwise>
+                </c:choose>
+
+                <td>${repairForm.creationDate.toLocalDate()}</td>
+                <td>${repairForm.author.firstName} ${repairForm.author.lastName}</td>
+                <td>${repairForm.car} </td>
+                <td>${repairForm.shortDescription} </td>
+                <td>${repairForm.status} </td>
+                <td>${repairForm.price} </td>
                 <td>
                     <button type="button" class="btn btn-outline-info"
                             onclick="location.href='/repairs/view/${repairForm.id}'">
@@ -64,9 +80,37 @@
         </c:forEach>
         </tbody>
     </table>
-    <button type="button" class="btn btn-primary"
-            onclick="location.href='/repairs/add'">
-        <spring:message code="repairForm.add"/></button>
+
+    <nav aria-label="...">
+        <ul class="pagination">
+            <c:if test="${currentPage != 1}">
+                <li class="page-item item">
+                    <a class="page-link" href="${basePath}/page/${currentPage - 1}" tabindex="-1"><spring:message
+                            code="pagination.previous"/></a>
+                </li>
+            </c:if>
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <c:choose>
+                    <c:when test="${currentPage eq i}">
+                        <li class="page-item active">
+                            <a class="page-link">${i}</a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="page-item"><a class="page-link" href="${basePath}/page/${i}">${i}</a></li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:if test="${currentPage lt totalPages}">
+                <li class="page-item">
+                    <a class="page-link" href="${basePath}/page/${currentPage + 1}"><spring:message
+                            code="pagination.next"/></a>
+                </li>
+            </c:if>
+        </ul>
+    </nav>
+
+
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

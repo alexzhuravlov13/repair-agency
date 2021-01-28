@@ -4,6 +4,9 @@ import com.zhuravlov.repairagency.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.repository.RepairFormRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,15 +21,21 @@ public class RepairFormServiceImpl implements RepairFormService {
     private RepairFormRepository repository;
 
     @Override
-    public List<RepairFormEntity> findUserRepairForms(int id) {
-        List<RepairFormEntity> repairFormsList = repository.findRepairFormEntityByAuthor_userId(id);
-        log.info("Loaded from db: " + repairFormsList.toString());
-        return repairFormsList;
+    public Page<RepairFormEntity> findAllPaginated(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return repository.findAll(pageable);
     }
 
     @Override
-    public List<RepairFormEntity> findRepairmansForms(int id) {
-        return repository.findRepairFormEntityByRepairmanId(id);
+    public Page<RepairFormEntity> findUserRepairFormsPaginated(int id, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return repository.findByAuthor_userId(id, pageable);
+    }
+
+    @Override
+    public Page<RepairFormEntity> findRepairmanForms(int id, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return repository.findByRepairmanId(id, pageable);
     }
 
     @Override
@@ -44,7 +53,7 @@ public class RepairFormServiceImpl implements RepairFormService {
     }
 
     @Override
-    public List<RepairFormEntity> getRepairForms() {
-        return repository.findAll();
+    public void saveAll(List<RepairFormEntity> repairForms) {
+        repository.saveAll(repairForms);
     }
 }

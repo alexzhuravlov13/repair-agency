@@ -3,6 +3,7 @@ package com.zhuravlov.repairagency.config;
 import com.zhuravlov.repairagency.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.entity.Status;
 import com.zhuravlov.repairagency.entity.UserEntity;
+import com.zhuravlov.repairagency.entity.builder.RepairFormBuilder;
 import com.zhuravlov.repairagency.repository.RoleRepository;
 import com.zhuravlov.repairagency.service.RepairFormService;
 import com.zhuravlov.repairagency.service.UserService;
@@ -12,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -40,133 +43,109 @@ public class InsertAdminAndRoles implements InitializingBean {
     }
 
     private void initRepairForms() {
-        RepairFormEntity repairFormEntity1 = new RepairFormEntity();
-        repairFormEntity1.setCar("Subaru Impreza WRX Blue");
-        repairFormEntity1.setShortDescription("4th cylinder");
-        repairFormEntity1.setCreationDate(LocalDateTime.now());
-        repairFormEntity1.setLastModifiedDate(LocalDateTime.now());
-        repairFormEntity1.setAuthor(userService.getUser(1));
-        repairFormEntity1.setDescription("Subariku pora na kapitalku");
-        repairFormEntity1.setStatus(Status.NEW);
+        List<RepairFormEntity> repairFormEntityList = new ArrayList<>();
 
+        int masterId = userService.findByUsername("master1@gmail.com").getUserId();
 
-        repairFormService.addRepairForm(repairFormEntity1);
+        for (int i = 1; i < 13; i++) {
+            RepairFormEntity repairFormEntity1 =
+                    builderForm("Car" + i + " Blue",
+                            "ShortDescription" + i, 1,
+                            "Description" + i,
+                            Status.NEW).build();
+            repairFormEntityList.add(repairFormEntity1);
 
-        RepairFormEntity repairFormEntity2 = new RepairFormEntity();
-        repairFormEntity2.setCar("Mitsubishi evo 8 red");
-        repairFormEntity2.setShortDescription("4wd not drifting");
-        repairFormEntity2.setCreationDate(LocalDateTime.now());
-        repairFormEntity2.setLastModifiedDate(LocalDateTime.now());
-        repairFormEntity2.setAuthor(userService.getUser(3));
-        repairFormEntity2.setDescription("change engine to 16rik");
-        repairFormEntity2.setStatus(Status.READY);
+            RepairFormEntity repairFormEntity2 =
+                    builderForm("Car" + i + " Red",
+                            "ShortDescription" + i, 3,
+                            "Problem" + i,
+                            Status.READY, masterId).build();
+            repairFormEntityList.add(repairFormEntity2);
+        }
 
+        repairFormService.saveAll(repairFormEntityList);
 
-        repairFormService.addRepairForm(repairFormEntity2);
     }
 
+    private RepairFormBuilder builderForm(String car, String shortDescription, int authorId, String description, Status status) {
+        RepairFormBuilder builder = new RepairFormBuilder()
+                .setCar(car)
+                .setShortDescription(shortDescription)
+                .setCreationDate(LocalDateTime.now())
+                .setLastModifiedDate(LocalDateTime.now())
+                .setAuthor(userService.getUser(authorId))
+                .setDescription(description)
+                .setStatus(status);
+
+        return builder;
+    }
+
+    private RepairFormBuilder builderForm(String car, String shortDescription, int authorId, String description, Status status, int repairmanId) {
+        RepairFormBuilder builder = builderForm(car, shortDescription, authorId, description, status);
+
+        if (repairmanId > 0) {
+            builder.setRepairmanId(repairmanId);
+        }
+
+        return builder;
+    }
+
+
     private void initUsers() {
+        initUser("Alex", "Zhuravlov", "admin@gmail.com", "ROLE_ADMIN");
+
+        initUser("Manager", "Managerovich", "manager@gmail.com", "ROLE_MANAGER");
+
+        initUser("User", "Userovich", "User@gmail.com", "user@gmail.com", "ROLE_USER");
+
+        initUser("Repairman1", "Master", "master1@gmail.com", "master1@gmail.com", "ROLE_REPAIRMAN");
+
+        initUser("Repairman2", "Master2", "master2@gmail.com", "master2@gmail.com", "ROLE_REPAIRMAN");
+    }
+
+    private void initUser(String alex, String zhuravlov, String s, String role_admin) {
         UserEntity admin =
                 new UserEntity(
-                        "Alex",
-                        "Zhuravlov",
-                        "admin@gmail.com",
+                        alex,
+                        zhuravlov,
+                        s,
                         "111111");
 
-        UserEntity byUsername = userService.findByUsername("admin@gmail.com");
+        UserEntity byUsername = userService.findByUsername(s);
 
         if (byUsername == null) {
             userService.addUser(admin);
         }
 
-        byUsername = userService.findByUsername("admin@gmail.com");
+        byUsername = userService.findByUsername(s);
 
         byUsername.setRoles(new HashSet<>(Arrays.asList(
                 roleRepository.findByName("ROLE_USER"),
-                roleRepository.findByName("ROLE_ADMIN"))));
+                roleRepository.findByName(role_admin))));
 
         userService.updateUser(byUsername);
+    }
 
-        UserEntity manager =
-                new UserEntity(
-                        "Manager",
-                        "Managerovich",
-                        "manager@gmail.com",
-                        "111111");
-
-        UserEntity managerbyUsername = userService.findByUsername("manager@gmail.com");
-
-        if (managerbyUsername == null) {
-            userService.addUser(manager);
-        }
-
-        managerbyUsername = userService.findByUsername("manager@gmail.com");
-
-        managerbyUsername.setRoles(new HashSet<>(Arrays.asList(
-                roleRepository.findByName("ROLE_USER"),
-                roleRepository.findByName("ROLE_MANAGER"))));
-
-        userService.updateUser(managerbyUsername);
-
+    private void initUser(String user2, String userovich, String s, String s2, String role_user) {
         UserEntity user =
                 new UserEntity(
-                        "User",
-                        "Userovich",
-                        "User@gmail.com",
+                        user2,
+                        userovich,
+                        s,
                         "111111");
 
-        UserEntity userbyUsername = userService.findByUsername("user@gmail.com");
+        UserEntity userbyUsername = userService.findByUsername(s2);
 
         if (userbyUsername == null) {
             userService.addUser(user);
         }
 
-        userbyUsername = userService.findByUsername("user@gmail.com");
+        userbyUsername = userService.findByUsername(s2);
 
         userbyUsername.setRoles(new HashSet<>(Arrays.asList(
-                roleRepository.findByName("ROLE_USER"))));
+                roleRepository.findByName(role_user))));
 
         userService.updateUser(userbyUsername);
-
-        UserEntity repairman1 =
-                new UserEntity(
-                        "Repairman1",
-                        "Master",
-                        "master1@gmail.com",
-                        "111111");
-
-        UserEntity repairman1byUsername = userService.findByUsername("master1@gmail.com");
-
-        if (repairman1byUsername == null) {
-            userService.addUser(repairman1);
-        }
-
-        repairman1byUsername = userService.findByUsername("master1@gmail.com");
-
-        repairman1byUsername.setRoles(new HashSet<>(Arrays.asList(
-                roleRepository.findByName("ROLE_REPAIRMAN"))));
-
-        userService.updateUser(repairman1byUsername);
-
-        UserEntity repairman2 =
-                new UserEntity(
-                        "Repairman2",
-                        "Master2",
-                        "master2@gmail.com",
-                        "111111");
-
-        UserEntity repairman2byUsername = userService.findByUsername("master2@gmail.com");
-
-        if (repairman2byUsername == null) {
-            userService.addUser(repairman2);
-        }
-
-        repairman2byUsername = userService.findByUsername("master2@gmail.com");
-
-        repairman2byUsername.setRoles(new HashSet<>(Arrays.asList(
-                roleRepository.findByName("ROLE_REPAIRMAN"))));
-
-        userService.updateUser(repairman2byUsername);
     }
 
     private void initRoles() {

@@ -21,7 +21,8 @@
 
         <div class="row mb-3">
             <div class="col-xs-15">
-                <strong><spring:message code="repairForm.Author"/></strong>: ${repairForm.author.firstName} ${repairForm.author.lastName}
+                <strong><spring:message
+                        code="repairForm.Author"/></strong>: ${repairForm.author.firstName} ${repairForm.author.lastName}
             </div>
         </div>
 

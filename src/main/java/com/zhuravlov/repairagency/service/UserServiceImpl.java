@@ -5,10 +5,12 @@ import com.zhuravlov.repairagency.entity.UserEntity;
 import com.zhuravlov.repairagency.repository.RoleRepository;
 import com.zhuravlov.repairagency.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,13 +38,18 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userEntity);
     }
 
-    @Transactional
     @Override
-    public List<UserEntity> getUsers() {
-        return userRepository.findAll();
+    public void saveAll(List<UserEntity> users) {
+        userRepository.saveAll(users);
     }
 
-    @Transactional
+    @Override
+    public Page<UserEntity> findAllPaginated(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return userRepository.findAll(pageable);
+    }
+
+
     @Override
     public UserEntity getUser(int id) {
         Optional<UserEntity> userByIdOptional = userRepository.findById(id);
