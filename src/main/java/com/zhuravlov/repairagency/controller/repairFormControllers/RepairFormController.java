@@ -48,16 +48,19 @@ public class RepairFormController {
     public ModelAndView getRepairFormList(Model model) {
         userName = controllerUtil.getUserName();
         log.info("--User:" + userName + " entered /list endpoint");
-        return findUsersRepairsPaginated(1);
+        return findUsersRepairsPaginated(1, "creationDate", "desc");
     }
 
     @GetMapping("/list/page/{pageNo}")
-    public ModelAndView findUsersRepairsPaginated(@PathVariable(value = "pageNo") int pageNo) {
+    public ModelAndView findUsersRepairsPaginated(
+            @PathVariable(value = "pageNo") int pageNo,
+            @RequestParam("sortField") String sortField,
+            @RequestParam("sortDir") String sortDir) {
         log.info("--User:" + userName + " entered /list/page/" + pageNo + " endpoint");
         int pageSize = 10;
         int userId = getIdFromDbByAuthentication();
 
-        Page<RepairFormEntity> page = repairFormService.findUserRepairFormsPaginated(userId, pageNo, pageSize);
+        Page<RepairFormEntity> page = repairFormService.findUserRepairFormsPaginated(userId, pageNo, pageSize, sortField, sortDir);
         List<RepairFormEntity> repairFormList = page.getContent();
 
         int id = getIdFromDbByAuthentication();
@@ -68,7 +71,11 @@ public class RepairFormController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("repairFormUserList");
         modelAndView.addObject("amount", amount);
-        return controllerUtil.getModelAndViewAttributesForFormList(basePath, pageNo, page, repairFormList, modelAndView);
+        modelAndView.addObject("sortField", sortField);
+        modelAndView.addObject("sortDir", sortDir);
+        modelAndView.addObject("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        return controllerUtil.
+                getModelAndViewAttributesForFormList(basePath, pageNo, page, repairFormList, modelAndView);
     }
 
     @GetMapping("/add")

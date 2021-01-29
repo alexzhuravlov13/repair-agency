@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -35,11 +36,13 @@ public class RepairFormControllerRepairman {
     public ModelAndView getRepairmanForms(Model model) {
         userName = controllerUtil.getUserName();
         log.info("--User:" + userName + " entered /manager/list endpoint");
-        return findRepairmanFormsPaginated(1);
+        return findRepairmanFormsPaginated(1, "creationDate", "desc");
     }
 
     @GetMapping("/repairman/list/page/{pageNo}")
-    public ModelAndView findRepairmanFormsPaginated(@PathVariable(value = "pageNo") int pageNo) {
+    public ModelAndView findRepairmanFormsPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                                    @RequestParam("sortField") String sortField,
+                                                    @RequestParam("sortDir") String sortDir) {
         log.info("--User:" + userName + " entered /manager/list/page/" + pageNo + " endpoint");
         int pageSize = 10;
 
@@ -47,8 +50,14 @@ public class RepairFormControllerRepairman {
         String basePath = "/repairs/repairman/list";
 
         Page<RepairFormEntity> page =
-                repairFormService.findRepairmanForms(repairmanId, pageNo, pageSize);
-        return controllerUtil.getModelAndViewForList(basePath, pageNo, page);
+                repairFormService.findRepairmanForms(repairmanId, pageNo, pageSize, sortField, sortDir);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("repairFormUserList");
+        modelAndView.addObject("sortField", sortField);
+        modelAndView.addObject("sortDir", sortDir);
+        modelAndView.addObject("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        return controllerUtil.
+                getModelAndViewAttributesForFormList(basePath, pageNo, page, page.getContent(), modelAndView);
     }
 
     private int getIdFromDbByAuthentication() {

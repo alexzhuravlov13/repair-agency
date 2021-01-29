@@ -1,7 +1,6 @@
 package com.zhuravlov.repairagency.controller;
 
 import com.zhuravlov.repairagency.entity.UserEntity;
-import com.zhuravlov.repairagency.service.SecurityService;
 import com.zhuravlov.repairagency.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,9 +18,6 @@ public class RegistrationController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    private SecurityService securityService;
 
     @GetMapping("/registration")
     public String registration(Model model, @RequestParam(required = false) String error) {

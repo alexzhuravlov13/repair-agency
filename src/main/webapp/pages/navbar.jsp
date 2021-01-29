@@ -18,37 +18,37 @@
         <span class="navbar-brand">Repair agency</span>
 
         <li class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/"><spring:message code="navbar.home"/></a>
+            <ul class="nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/"><spring:message code="navbar.home"/></a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')">
                         <a class="nav-link" href="${pageContext.request.contextPath}/users/list"><spring:message
                                 code="navbar.users"/></a>
                     </sec:authorize>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/repairs/list"><spring:message
                             code="navbar.RepairFormList"/></a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <sec:authorize access="hasRole('ROLE_MANAGER')">
                         <a class="nav-link"
                            href="${pageContext.request.contextPath}/repairs/manager/list"><spring:message
                                 code="navbar.AllRepairFormList"/></a>
                     </sec:authorize>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <sec:authorize access="hasRole('ROLE_REPAIRMAN')">
                         <a class="nav-link"
                            href="${pageContext.request.contextPath}/repairs/repairman/list"><spring:message
                                 code="navbar.AllRepairFormList"/></a>
                     </sec:authorize>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <span class="nav-link"><spring:message code="changeLocale"/>:</span>
-                <li class="dropdown ms-3">
+                <li class="dropdown" style="padding-top: 3px">
                     <select class="form-select form-select-sm" id="locales">
                         <option value=""></option>
                         <option value="en"><spring:message code="locales.en"/></option>
