@@ -20,6 +20,10 @@
                      class="mx-auto p-5 m-3" style="width: 50%; background-color: #eee;">
         <h2><spring:message code="userEdit.h"/></h2>
 
+        <springForm:hidden path="userId"/>
+
+        <springForm:hidden path="amount"/>
+
         <spring:bind path="email">
             <spring:message code="registration.Email" var="emailPh"/>
             <div class="row mb-3 ${status.error ? 'has-error' : ''}">

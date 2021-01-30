@@ -58,6 +58,7 @@
         <springForm:hidden path="status"/>
 
         <springForm:hidden path="price"/>
+        <springForm:hidden path="lastModifiedDate"/>
 
         <spring:message code="repairForm.review" var="reviewPh"/>
         <div class="row mb-3 ${status.error ? 'has-error' : ''}">

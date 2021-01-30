@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,8 +52,16 @@ public class RepairFormServiceImpl implements RepairFormService {
     }
 
     @Override
-    public void addRepairForm(RepairFormEntity repairForm) {
+    public RepairFormEntity addRepairForm(RepairFormEntity repairForm) {
         repository.save(repairForm);
+        return repairForm;
+    }
+
+    @Transactional
+    @Override
+    public RepairFormEntity updateRepairForm(RepairFormEntity repairFormEntity) {
+        repository.save(repairFormEntity);
+        return repairFormEntity;
     }
 
     @Override
@@ -65,8 +74,9 @@ public class RepairFormServiceImpl implements RepairFormService {
     }
 
     @Override
-    public void saveAll(List<RepairFormEntity> repairForms) {
+    public List<RepairFormEntity> saveAll(List<RepairFormEntity> repairForms) {
         repository.saveAll(repairForms);
+        return repairForms;
     }
 
     @Override

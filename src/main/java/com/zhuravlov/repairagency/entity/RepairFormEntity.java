@@ -16,43 +16,29 @@ public class RepairFormEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
-    LocalDateTime creationDate;
+    private LocalDateTime creationDate;
 
     @OneToOne
     @JoinColumn(name = "author_id")
-    UserEntity author;
+    private UserEntity author;
 
-    String car;
+    private String car;
 
-    String shortDescription;
+    private String shortDescription;
 
-    String description;
+    private String description;
 
-    String feedback;
+    private String feedback;
 
-    int repairmanId;
+    private int repairmanId;
 
     @Enumerated(EnumType.STRING)
-    Status status;
+    private Status status;
 
-    LocalDateTime lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     @Min(0)
-    BigDecimal price = BigDecimal.valueOf(0);
-
-    @Override
-    public String toString() {
-        return "RepairFormEntity{" +
-                "id=" + id +
-                ", creationDate=" + creationDate +
-                ", authorId=" + author.getUserId() +
-                ", shortDescription='" + shortDescription + '\'' +
-                ", repairmanId=" + repairmanId +
-                ", status=" + status.toString() +
-                ", lastModifiedDate=" + lastModifiedDate +
-                ", price=" + price +
-                '}';
-    }
+    private BigDecimal price = BigDecimal.valueOf(0);
 }

@@ -17,7 +17,7 @@
 <jsp:include page="navbar.jsp"/>
 <div class="container mt-3">
     <h3><spring:message code="users.title"/></h3>
-    <table class="table">
+    <table class="table table-striped table-light">
         <thead>
         <tr>
             <th scope="col">#</th>

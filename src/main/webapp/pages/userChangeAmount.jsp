@@ -16,31 +16,14 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div class="container">
-    <springForm:form method="POST" action="changeAmount" modelAttribute="userAttribute"
+    <springForm:form method="POST" action="changeAmount" modelAttribute="userAmountDto"
                      class="mx-auto p-5 m-3" style="width: 50%; background-color: #eee;">
         <h2><spring:message code="userEdit.changeAmount"/></h2>
 
-        <div class="row mb-3">
-            <div class="col-xs-15">
-                <strong><spring:message code="registration.FirstName"/></strong>: ${userAttribute.firstName}
-            </div>
-            <div class="col-xs-15">
-                <strong><spring:message code="registration.LastName"/></strong>: ${userAttribute.lastName}
-            </div>
-        </div>
+        <springForm:hidden path="userId"/>
 
         <div class="col-xs-15">
-            <strong><spring:message code="registration.Email"/></strong>: ${userAttribute.email}
-        </div>
-
-
-        <springForm:hidden path="email"/>
-        <springForm:hidden path="firstName"/>
-        <springForm:hidden path="lastName"/>
-        <springForm:hidden path="password"/>
-
-        <div class="col-xs-15">
-            <strong><spring:message code="users.Amount"/></strong>: ${userAttribute.amount}
+            <strong><spring:message code="users.Amount"/></strong>: ${userAmountDto.amount}
         </div>
 
         <spring:bind path="amount">

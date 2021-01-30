@@ -4,7 +4,6 @@ import com.zhuravlov.repairagency.entity.DTO.FilterDto;
 import com.zhuravlov.repairagency.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.entity.Status;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -17,11 +16,13 @@ public interface RepairFormService {
 
     Page<RepairFormEntity> findRepairmanForms(int id, int pageNo, int pageSize, String sortField, String sortDirection);
 
-    void addRepairForm(RepairFormEntity formFromDto);
+    RepairFormEntity addRepairForm(RepairFormEntity formFromDto);
+
+    RepairFormEntity updateRepairForm(RepairFormEntity repairFormEntity);
 
     RepairFormEntity getRepairForm(int id);
 
-    void saveAll(List<RepairFormEntity> repairForms);
+    List<RepairFormEntity> saveAll(List<RepairFormEntity> repairForms);
 
     Page<RepairFormEntity> findByStatus(Status status, int pageNo, int pageSize, String sortField, String sortDirection);
 

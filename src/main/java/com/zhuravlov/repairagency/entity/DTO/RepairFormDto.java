@@ -2,7 +2,6 @@ package com.zhuravlov.repairagency.entity.DTO;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.lang.NonNull;
 
@@ -10,25 +9,19 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class RepairFormDto {
 
     @CreatedDate
-    LocalDateTime creationDate;
+    private LocalDateTime creationDate;
 
-    int authorId;
-
-    @NonNull
-    String car;
+    private int authorId;
 
     @NonNull
-    String shortDescription;
+    private String car;
 
     @NonNull
-    String description;
+    private String shortDescription;
 
-    public RepairFormDto(LocalDateTime creationDate, int authorId) {
-        this.creationDate = creationDate;
-        this.authorId = authorId;
-    }
+    @NonNull
+    private String description;
 }

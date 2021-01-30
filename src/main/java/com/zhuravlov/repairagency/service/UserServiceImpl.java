@@ -12,7 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -31,16 +32,16 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void addUser(UserEntity userEntity) {
+    public UserEntity addUser(UserEntity userEntity) {
         userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
-        userEntity.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByName("ROLE_USER"))));
-
-        userRepository.save(userEntity);
+        userEntity.setRoles(new HashSet<>(Collections.singletonList(roleRepository.findByName("ROLE_USER"))));
+        return userRepository.save(userEntity);
     }
 
     @Override
-    public void saveAll(List<UserEntity> users) {
+    public List<UserEntity> saveAll(List<UserEntity> users) {
         userRepository.saveAll(users);
+        return users;
     }
 
     @Override
@@ -60,13 +61,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UserEntity userEntity) {
+    public UserEntity updateUser(UserEntity userEntity) {
         userRepository.save(userEntity);
+        return userEntity;
     }
 
     @Override
-    public void deleteUser(int id) {
+    public boolean deleteUser(int id) {
         userRepository.deleteById(id);
+        return userRepository.findById(id).isEmpty();
     }
 
     @Override
@@ -77,6 +80,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserEntity> findUsersByRole(String role) {
         return userRepository.findByRoles_name(role);
+    }
+
+    @Override
+    public boolean changeAmount(int userId, BigDecimal amount) {
+        userRepository.changeUserAmount(userId, amount);
+        Optional<UserEntity> byId = userRepository.findById(userId);
+        return byId.map(userEntity -> userEntity.getAmount().equals(amount)).orElse(false);
     }
 
 }

@@ -86,6 +86,12 @@
             </div>
         </div>
 
+        <jstlC:if test="${param.error != null}">
+            <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+                <span><spring:message code="repairFormEdit.error"/></span>
+            </div>
+        </jstlC:if>
+
 
         <spring:bind path="price">
             <spring:message code="repairForm.price" var="pricePh"/>

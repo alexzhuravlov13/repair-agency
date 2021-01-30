@@ -1,6 +1,7 @@
 package com.zhuravlov.repairagency.controller;
 
 import com.zhuravlov.repairagency.controller.Util.ControllerUtil;
+import com.zhuravlov.repairagency.entity.DTO.UserAmountDto;
 import com.zhuravlov.repairagency.entity.RoleEntity;
 import com.zhuravlov.repairagency.entity.UserEntity;
 import com.zhuravlov.repairagency.repository.RoleRepository;
@@ -9,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,9 +35,6 @@ public class UsersController {
 
     @Autowired
     private RoleRepository roleRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @GetMapping("/add")
@@ -91,29 +88,21 @@ public class UsersController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/editUser")
     public String updateUser(@ModelAttribute("userAttribute") @Validated UserEntity userEntity) {
-        UserEntity userFromDb = userService.findByUsername(userEntity.getEmail());
-        userFromDb.setEmail(userEntity.getEmail());
-        userFromDb.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
-        userFromDb.setFirstName(userEntity.getFirstName());
-        userFromDb.setLastName(userEntity.getLastName());
-        userFromDb.setRoles(userEntity.getRoles());
-        userService.updateUser(userFromDb);
+        userService.updateUser(userEntity);
         return "redirect:/users/list";
     }
 
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     @GetMapping("/changeAmount")
     public String changeAmountUserForm(Model model, @RequestParam("userId") int userId) {
-        model.addAttribute("userAttribute", userService.getUser(userId));
+        model.addAttribute("userAmountDto", new UserAmountDto(userId));
         return "userChangeAmount";
     }
 
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     @PostMapping("/changeAmount")
-    public String changeUserAmount(@ModelAttribute("userAttribute") @Validated UserEntity userEntity) {
-        UserEntity userFromDb = userService.findByUsername(userEntity.getEmail());
-        userFromDb.setAmount(userFromDb.getAmount().add(userEntity.getAmount()));
-        userService.updateUser(userFromDb);
+    public String changeUserAmount(@ModelAttribute("userAttribute") UserAmountDto userAmountDto) {
+        userService.changeAmount(userAmountDto.getUserId(), userAmountDto.getAmount());
         return "redirect:/users/list";
     }
 

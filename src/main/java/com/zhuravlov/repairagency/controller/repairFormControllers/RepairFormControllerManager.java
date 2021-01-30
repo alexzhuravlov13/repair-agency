@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -40,10 +39,9 @@ public class RepairFormControllerManager {
 
     private FilterDto filterRequest;
 
-    private boolean initLists() {
+    private void initLists() {
         allMasters = userService.findUsersByRole("ROLE_REPAIRMAN");
         allStatuses = repairFormService.findAllStatuses();
-        return !allStatuses.isEmpty() || !allMasters.isEmpty();
     }
 
     @GetMapping("/list")
@@ -55,7 +53,7 @@ public class RepairFormControllerManager {
     }
 
     @PostMapping("/list")
-    public String getAllRepairForms(Model model, @ModelAttribute("filterDto") FilterDto filterDto) {
+    public String getAllRepairForms(@ModelAttribute("filterDto") FilterDto filterDto) {
         filterRequest = filterDto;
         return "redirect:/repairs/manager/list";
     }
@@ -103,9 +101,7 @@ public class RepairFormControllerManager {
         log.info("--User:" + userName + " entered /manager/list/page/" + pageNo + " endpoint");
         int pageSize = 10;
         Page<RepairFormEntity> page = getPagesByFilterField(pageNo, filterField, sortField, sortDir, pageSize);
-        if (page != null) {
-            //TODO:return null
-        }
+
         String basePath = "/repairs/manager/list";
 
         ModelAndView modelAndView = new ModelAndView();
