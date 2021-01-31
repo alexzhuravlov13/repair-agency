@@ -1,7 +1,7 @@
 package com.zhuravlov.repairagency.controller.Util;
 
-import com.zhuravlov.repairagency.entity.RepairFormEntity;
-import com.zhuravlov.repairagency.entity.UserEntity;
+import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
+import com.zhuravlov.repairagency.model.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;

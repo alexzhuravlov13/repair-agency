@@ -17,10 +17,9 @@
 <jsp:include page="navbar.jsp"/>
 <div class="container mt-3">
     <c:if test="${not empty amount}">
-        <h3><spring:message code="users.Amount"/>: ${amount}</h3>
+        <h5><spring:message code="users.Amount"/>: ${amount}</h5>
     </c:if>
-    <h3><spring:message code="repairForm.title"/></h3>
-
+    <h5><spring:message code="repairForm.title"/></h5>
     <div class="row">
         <div class="col m-3" style="max-width: 20%; display:inline-block">
             <button type="button" class="btn btn-primary m-3"
@@ -153,10 +152,17 @@
                             <spring:message code="repairForm.review"/></button>
                     </c:if>
                 </td>
-                <sec:authorize access="hasRole('ROLE_MANAGER') or hasRole('ROLE_REPAIRMAN')">
+                <sec:authorize access="hasRole('ROLE_MANAGER')">
                     <td>
                         <button type="button" class="btn btn-outline-info"
-                                onclick="location.href='/repairs/edit/${repairForm.id}'">
+                                onclick="location.href='/repairs/manager/edit/${repairForm.id}'">
+                            <spring:message code="repairForm.edit"/></button>
+                    </td>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_REPAIRMAN')">
+                    <td>
+                        <button type="button" class="btn btn-outline-info"
+                                onclick="location.href='/repairs/repairman/edit/${repairForm.id}'">
                             <spring:message code="repairForm.edit"/></button>
                     </td>
                 </sec:authorize>
@@ -198,12 +204,11 @@
             </c:if>
         </ul>
     </nav>
-
-
+    <jsp:include page="navbottom.jsp"/>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>
-
 </body>
 </html>

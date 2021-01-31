@@ -80,5 +80,6 @@
 
     </div>
 </div>
+<jsp:include page="navbottom.jsp"/>
 </body>
 </html>

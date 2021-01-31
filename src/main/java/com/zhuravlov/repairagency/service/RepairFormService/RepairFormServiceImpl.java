@@ -1,0 +1,134 @@
+package com.zhuravlov.repairagency.service.RepairFormService;
+
+import com.zhuravlov.repairagency.model.DTO.FilterDto;
+import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
+import com.zhuravlov.repairagency.model.entity.Status;
+import com.zhuravlov.repairagency.model.exception.RepairFormNotFoundException;
+import com.zhuravlov.repairagency.repository.RepairFormRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+@Slf4j
+@Service
+public class RepairFormServiceImpl implements RepairFormService {
+
+    @Autowired
+    private RepairFormRepository repository;
+
+    @Override
+    public Page<RepairFormEntity> findAllPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<RepairFormEntity> findUserRepairFormsPaginated(int id, int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
+        return repository.findByAuthor_userId(id, pageable);
+    }
+
+    @Override
+    public Page<RepairFormEntity> findRepairmanForms(int id, int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
+        return repository.findByRepairmanId(id, pageable);
+    }
+
+    @Override
+    public RepairFormEntity addRepairForm(RepairFormEntity repairForm) {
+        repository.save(repairForm);
+        return repairForm;
+    }
+
+    @Transactional
+    @Override
+    public RepairFormEntity updateRepairForm(RepairFormEntity repairFormEntity) {
+        repository.save(repairFormEntity);
+        return repairFormEntity;
+    }
+
+    @Override
+    public RepairFormEntity getRepairForm(int id) {
+        Optional<RepairFormEntity> repairFormOptional = repository.findById(id);
+        if (repairFormOptional.isEmpty()) {
+            throw new RepairFormNotFoundException();
+        }
+        return repairFormOptional.get();
+    }
+
+    @Override
+    public List<RepairFormEntity> saveAll(List<RepairFormEntity> repairForms) {
+        repository.saveAll(repairForms);
+        return repairForms;
+    }
+
+    @Override
+    public Page<RepairFormEntity> findByStatus(Status status, int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
+        Page<RepairFormEntity> byStatus = repository.findByStatus(status, pageable);
+        if (byStatus.isEmpty()) {
+            throw new RepairFormNotFoundException();
+        }
+        return byStatus;
+    }
+
+    @Override
+    public List<RepairFormEntity> findAll() {
+        List<RepairFormEntity> all = repository.findAll();
+        if (all.isEmpty()) {
+            throw new RepairFormNotFoundException();
+        }
+        return all;
+    }
+
+    @Override
+    public List<Status> findAllStatuses() {
+        return Arrays.asList(Status.values());
+    }
+
+    @Override
+    public Page<RepairFormEntity> findFiltered(FilterDto filterRequest, int pageNo, int pageSize, String sortField, String sortDir) {
+        log.info(filterRequest.toString());
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDir);
+
+        String masterId = filterRequest.getMasterId();
+        String status = filterRequest.getStatus();
+
+        boolean statusIsNotPresent = status == null || status.isEmpty();
+        boolean masterIdIsNotPresent = masterId == null || masterId.isEmpty();
+
+        Page<RepairFormEntity> page;
+
+        if (masterIdIsNotPresent && !statusIsNotPresent) {
+            page = repository.findByStatus(Status.valueOf(status), pageable);
+        } else if (statusIsNotPresent && !masterIdIsNotPresent) {
+            page = repository.findByRepairmanId(Integer.parseInt(masterId), pageable);
+        } else if (!statusIsNotPresent) {
+            page = repository.findByRepairmanIdAndStatus(Integer.parseInt(masterId), Status.valueOf(status), pageable);
+        } else {
+            page = findAllPaginated(pageNo, pageSize, sortField, sortDir);
+        }
+        if (page == null || page.isEmpty()) {
+            throw new RepairFormNotFoundException();
+        }
+
+        return page;
+    }
+
+    private Pageable getPageable(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection
+                .equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+        return PageRequest.of(pageNo - 1, pageSize, sort);
+    }
+}

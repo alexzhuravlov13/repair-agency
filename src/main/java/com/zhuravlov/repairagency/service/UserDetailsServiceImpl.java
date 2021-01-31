@@ -1,7 +1,7 @@
 package com.zhuravlov.repairagency.service;
 
-import com.zhuravlov.repairagency.entity.RoleEntity;
-import com.zhuravlov.repairagency.entity.UserEntity;
+import com.zhuravlov.repairagency.model.entity.RoleEntity;
+import com.zhuravlov.repairagency.model.entity.UserEntity;
 import com.zhuravlov.repairagency.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

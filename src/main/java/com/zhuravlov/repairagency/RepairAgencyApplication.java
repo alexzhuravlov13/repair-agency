@@ -11,8 +11,5 @@ public class RepairAgencyApplication {
         SpringApplication.run(RepairAgencyApplication.class, args);
     }
 
-    //TODO:spring exception handler
-    //TODO:service returns entity (for tests), optionals or exceptions
     //TODO:refactor controllers, move business logic to services
-
 }

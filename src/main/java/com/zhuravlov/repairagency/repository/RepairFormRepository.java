@@ -1,7 +1,7 @@
 package com.zhuravlov.repairagency.repository;
 
-import com.zhuravlov.repairagency.entity.RepairFormEntity;
-import com.zhuravlov.repairagency.entity.Status;
+import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
+import com.zhuravlov.repairagency.model.entity.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

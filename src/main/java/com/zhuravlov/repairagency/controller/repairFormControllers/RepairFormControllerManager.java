@@ -1,20 +1,26 @@
 package com.zhuravlov.repairagency.controller.repairFormControllers;
 
 import com.zhuravlov.repairagency.controller.Util.ControllerUtil;
-import com.zhuravlov.repairagency.entity.DTO.FilterDto;
-import com.zhuravlov.repairagency.entity.RepairFormEntity;
-import com.zhuravlov.repairagency.entity.Status;
-import com.zhuravlov.repairagency.entity.UserEntity;
-import com.zhuravlov.repairagency.service.RepairFormService;
-import com.zhuravlov.repairagency.service.UserService;
+import com.zhuravlov.repairagency.model.DTO.FilterDto;
+import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
+import com.zhuravlov.repairagency.model.entity.Status;
+import com.zhuravlov.repairagency.model.entity.UserEntity;
+import com.zhuravlov.repairagency.service.RepairFormService.RepairFormService;
+import com.zhuravlov.repairagency.service.UserService.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -82,10 +88,14 @@ public class RepairFormControllerManager {
         String basePath = "/repairs/manager/list";
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("repairFormUserList");
         modelAndView.addObject("filterDto", new FilterDto());
         modelAndView.addObject("masters", allMasters);
         modelAndView.addObject("statuses", allStatuses);
+        return getModelAndView(pageNo, sortField, sortDir, page, basePath, modelAndView);
+    }
+
+    private ModelAndView getModelAndView(@PathVariable("pageNo") int pageNo, @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir, Page<RepairFormEntity> page, String basePath, ModelAndView modelAndView) {
+        modelAndView.setViewName("repairFormUserList");
         modelAndView.addObject("sortField", sortField);
         modelAndView.addObject("sortDir", sortDir);
         modelAndView.addObject("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
@@ -105,12 +115,62 @@ public class RepairFormControllerManager {
         String basePath = "/repairs/manager/list";
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("repairFormUserList");
-        modelAndView.addObject("sortField", sortField);
-        modelAndView.addObject("sortDir", sortDir);
-        modelAndView.addObject("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-        return controllerUtil.
-                getModelAndViewAttributesForFormList(basePath, pageNo, page, page.getContent(), modelAndView);
+        return getModelAndView(pageNo, sortField, sortDir, page, basePath, modelAndView);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
+    @GetMapping("/edit/{repairFormId}")
+    public String editManagerRepairForm(Model model, @PathVariable String repairFormId) {
+
+        List<Status> statuses = Arrays.asList(Status.CANCELED, Status.PAID, Status.WAITING_FOR_PAYMENT);
+
+        RepairFormEntity repairForm = repairFormService.getRepairForm(Integer.parseInt(repairFormId));
+
+        List<UserEntity> repairmans = userService.findUsersByRole("ROLE_REPAIRMAN");
+
+        editFormAddAttributes(model, statuses, repairForm, repairmans);
+        return "repairFormEdit";
+    }
+
+    @PostMapping("/editRepairForm")
+    public String saveEditedRepairForm(Model model, @ModelAttribute("repairFormAttribute")
+    @Validated RepairFormEntity repairFormEntity, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return addRepairFormAndReturnBackToEdit(model, repairFormEntity);
+        }
+
+        if (repairFormEntity.getStatus().equals(Status.PAID)) {
+
+            BigDecimal newAmount =
+                    repairFormEntity.getAuthor().getAmount().subtract(repairFormEntity.getPrice());
+
+            if (notEnoughMoney(repairFormEntity, newAmount)) {
+                return addRepairFormAndReturnBackToEdit(model, repairFormEntity);
+            }
+            repairFormEntity.getAuthor().setAmount(newAmount);
+        }
+
+        repairFormEntity.setLastModifiedDate(LocalDateTime.now());
+        repairFormService.addRepairForm(repairFormEntity);
+
+        return "redirect:/repairs/manager/list";
+
+    }
+
+    private void editFormAddAttributes(Model model, List<Status> statuses, RepairFormEntity repairForm, List<UserEntity> repairmans) {
+        model.addAttribute("statuses", statuses);
+        model.addAttribute("repairFormAttribute", repairForm);
+        model.addAttribute("repairmans", repairmans);
+    }
+
+    private boolean notEnoughMoney(@Validated @ModelAttribute("repairFormAttribute") RepairFormEntity repairFormEntity, BigDecimal newAmount) {
+        return newAmount.compareTo(BigDecimal.ZERO) < 0;
+    }
+
+    private String addRepairFormAndReturnBackToEdit(Model model, @Validated @ModelAttribute("repairFormAttribute") RepairFormEntity repairFormEntity) {
+        model.addAttribute("repairFormAttribute", repairFormEntity);
+        return "redirect:/repairs/manager/edit/" + repairFormEntity.getId() + "?error";
     }
 
     private Page<RepairFormEntity> getPagesByFilterField(@PathVariable("pageNo") int pageNo, @RequestParam("filterField") String filterField, @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir, int pageSize) {

@@ -17,7 +17,7 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div class="container">
-    <springform:form method="POST" action="/repairs/editRepairForm" modelAttribute="repairFormAttribute"
+    <springform:form method="POST" action="/repairs/manager/editRepairForm" modelAttribute="repairFormAttribute"
                      class="mx-auto p-5 m-3" style="width: 50%; background-color: #eee;">
         <h2><spring:message code="repairFormView.name"/></h2>
         <springForm:hidden path="id"/>
@@ -117,6 +117,7 @@
 
     </springform:form>
 </div>
+<jsp:include page="navbottom.jsp"/>
 </body>
 </html>
 

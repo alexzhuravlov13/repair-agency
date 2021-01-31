@@ -1,6 +1,6 @@
 package com.zhuravlov.repairagency.repository;
 
-import com.zhuravlov.repairagency.entity.UserEntity;
+import com.zhuravlov.repairagency.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

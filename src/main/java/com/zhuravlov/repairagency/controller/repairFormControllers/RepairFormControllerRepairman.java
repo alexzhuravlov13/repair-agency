@@ -1,23 +1,27 @@
 package com.zhuravlov.repairagency.controller.repairFormControllers;
 
 import com.zhuravlov.repairagency.controller.Util.ControllerUtil;
-import com.zhuravlov.repairagency.entity.RepairFormEntity;
-import com.zhuravlov.repairagency.service.RepairFormService;
-import com.zhuravlov.repairagency.service.UserService;
+import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
+import com.zhuravlov.repairagency.model.entity.Status;
+import com.zhuravlov.repairagency.service.RepairFormService.RepairFormService;
+import com.zhuravlov.repairagency.service.UserService.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
-@RequestMapping("/repairs")
+@RequestMapping("/repairs/repairman")
 @PreAuthorize("hasAuthority('ROLE_REPAIRMAN')")
 @Slf4j
 public class RepairFormControllerRepairman {
@@ -32,14 +36,14 @@ public class RepairFormControllerRepairman {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/repairman/list")
+    @GetMapping("/list")
     public ModelAndView getRepairmanForms(Model model) {
         userName = controllerUtil.getUserName();
         log.info("--User:" + userName + " entered /manager/list endpoint");
         return findRepairmanFormsPaginated(1, "creationDate", "desc");
     }
 
-    @GetMapping("/repairman/list/page/{pageNo}")
+    @GetMapping("/list/page/{pageNo}")
     public ModelAndView findRepairmanFormsPaginated(@PathVariable(value = "pageNo") int pageNo,
                                                     @RequestParam("sortField") String sortField,
                                                     @RequestParam("sortDir") String sortDir) {
@@ -51,13 +55,52 @@ public class RepairFormControllerRepairman {
 
         Page<RepairFormEntity> page =
                 repairFormService.findRepairmanForms(repairmanId, pageNo, pageSize, sortField, sortDir);
+        return getModelAndView(pageNo, sortField, sortDir, basePath, page, controllerUtil);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_REPAIRMAN')")
+    @GetMapping("/edit/{repairFormId}")
+    public String editRepairForm(Model model, @PathVariable String repairFormId) {
+
+        List<Status> statuses = Arrays.asList(Status.IN_PROGRESS, Status.READY);
+        ;
+
+        RepairFormEntity repairForm =
+                repairFormService.getRepairForm(Integer.parseInt(repairFormId));
+
+        model.addAttribute("statuses", statuses);
+        model.addAttribute("repairFormAttribute", repairForm);
+        return "repairFormRepairman";
+    }
+
+    @PostMapping("/editRepairForm")
+    public String saveEditedRepairForm(Model model, @ModelAttribute("repairFormAttribute")
+    @Validated RepairFormEntity repairFormEntity, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("repairFormAttribute", repairFormEntity);
+            return "redirect:/repairs/edit/" + repairFormEntity.getId() + "?error";
+        }
+
+        repairFormEntity.setLastModifiedDate(LocalDateTime.now());
+        repairFormService.addRepairForm(repairFormEntity);
+
+        return "redirect:/repairs/repairman/list";
+
+    }
+
+    private ModelAndView getModelAndView(@PathVariable("pageNo") int pageNo, @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir, String basePath, Page<RepairFormEntity> page, ControllerUtil controllerUtil) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndViewAddPaginatedAtributes(sortField, sortDir, modelAndView);
+        return controllerUtil.
+                getModelAndViewAttributesForFormList(basePath, pageNo, page, page.getContent(), modelAndView);
+    }
+
+    private void modelAndViewAddPaginatedAtributes(@RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir, ModelAndView modelAndView) {
         modelAndView.setViewName("repairFormUserList");
         modelAndView.addObject("sortField", sortField);
         modelAndView.addObject("sortDir", sortDir);
         modelAndView.addObject("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-        return controllerUtil.
-                getModelAndViewAttributesForFormList(basePath, pageNo, page, page.getContent(), modelAndView);
     }
 
     private int getIdFromDbByAuthentication() {

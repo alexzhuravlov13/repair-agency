@@ -1,7 +1,7 @@
 package com.zhuravlov.repairagency.controller;
 
-import com.zhuravlov.repairagency.entity.UserEntity;
-import com.zhuravlov.repairagency.service.UserService;
+import com.zhuravlov.repairagency.model.entity.UserEntity;
+import com.zhuravlov.repairagency.service.UserService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

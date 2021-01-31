@@ -93,5 +93,6 @@
 
     </springForm:form>
 </div>
+<jsp:include page="navbottom.jsp"/>
 </body>
 </html>

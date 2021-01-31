@@ -1,12 +1,12 @@
 package com.zhuravlov.repairagency.config;
 
-import com.zhuravlov.repairagency.entity.RepairFormEntity;
-import com.zhuravlov.repairagency.entity.Status;
-import com.zhuravlov.repairagency.entity.UserEntity;
-import com.zhuravlov.repairagency.entity.builder.RepairFormBuilder;
+import com.zhuravlov.repairagency.model.builder.RepairFormBuilder;
+import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
+import com.zhuravlov.repairagency.model.entity.Status;
+import com.zhuravlov.repairagency.model.entity.UserEntity;
 import com.zhuravlov.repairagency.repository.RoleRepository;
-import com.zhuravlov.repairagency.service.RepairFormService;
-import com.zhuravlov.repairagency.service.UserService;
+import com.zhuravlov.repairagency.service.RepairFormService.RepairFormService;
+import com.zhuravlov.repairagency.service.UserService.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +67,11 @@ public class InsertAdminAndRoles implements InitializingBean {
 
     }
 
-    private RepairFormBuilder builderForm(String car, String shortDescription, int authorId, String description, Status status) {
+    private RepairFormBuilder builderForm(String car,
+                                          String shortDescription,
+                                          int authorId,
+                                          String description,
+                                          Status status) {
         RepairFormBuilder builder = new RepairFormBuilder()
                 .setCar(car)
                 .setShortDescription(shortDescription)

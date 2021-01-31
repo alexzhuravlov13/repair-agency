@@ -1,11 +1,11 @@
 package com.zhuravlov.repairagency.controller;
 
 import com.zhuravlov.repairagency.controller.Util.ControllerUtil;
-import com.zhuravlov.repairagency.entity.DTO.UserAmountDto;
-import com.zhuravlov.repairagency.entity.RoleEntity;
-import com.zhuravlov.repairagency.entity.UserEntity;
+import com.zhuravlov.repairagency.model.DTO.UserAmountDto;
+import com.zhuravlov.repairagency.model.entity.RoleEntity;
+import com.zhuravlov.repairagency.model.entity.UserEntity;
 import com.zhuravlov.repairagency.repository.RoleRepository;
-import com.zhuravlov.repairagency.service.UserService;
+import com.zhuravlov.repairagency.service.UserService.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
