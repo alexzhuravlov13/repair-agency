@@ -39,7 +39,7 @@ public class RepairFormControllerRepairman {
     @GetMapping("/list")
     public ModelAndView getRepairmanForms(Model model) {
         userName = controllerUtil.getUserName();
-        log.info("--User:" + userName + " entered /manager/list endpoint");
+        log.info("--User:" + userName + " entered /repairman/list endpoint");
         return findRepairmanFormsPaginated(1, "creationDate", "desc");
     }
 
@@ -47,7 +47,7 @@ public class RepairFormControllerRepairman {
     public ModelAndView findRepairmanFormsPaginated(@PathVariable(value = "pageNo") int pageNo,
                                                     @RequestParam("sortField") String sortField,
                                                     @RequestParam("sortDir") String sortDir) {
-        log.info("--User:" + userName + " entered /manager/list/page/" + pageNo + " endpoint");
+        log.info("--User:" + userName + " entered /repairman/list/page/" + pageNo + " endpoint");
         int pageSize = 10;
 
         int repairmanId = getIdFromDbByAuthentication();
@@ -55,15 +55,16 @@ public class RepairFormControllerRepairman {
 
         Page<RepairFormEntity> page =
                 repairFormService.findRepairmanForms(repairmanId, pageNo, pageSize, sortField, sortDir);
+        log.info("Loaded: " + page.getContent().toString());
         return getModelAndView(pageNo, sortField, sortDir, basePath, page, controllerUtil);
     }
 
     @PreAuthorize("hasAuthority('ROLE_REPAIRMAN')")
     @GetMapping("/edit/{repairFormId}")
     public String editRepairForm(Model model, @PathVariable String repairFormId) {
+        log.info("--User:" + userName + " entered /repairman/edit/" + repairFormId + " endpoint");
 
         List<Status> statuses = Arrays.asList(Status.IN_PROGRESS, Status.READY);
-        ;
 
         RepairFormEntity repairForm =
                 repairFormService.getRepairForm(Integer.parseInt(repairFormId));
@@ -76,7 +77,7 @@ public class RepairFormControllerRepairman {
     @PostMapping("/editRepairForm")
     public String saveEditedRepairForm(Model model, @ModelAttribute("repairFormAttribute")
     @Validated RepairFormEntity repairFormEntity, BindingResult bindingResult) {
-
+        log.info("--User:" + userName + " entered /repairman/editRepairForm/ endpoint");
         if (bindingResult.hasErrors()) {
             model.addAttribute("repairFormAttribute", repairFormEntity);
             return "redirect:/repairs/edit/" + repairFormEntity.getId() + "?error";
@@ -84,7 +85,7 @@ public class RepairFormControllerRepairman {
 
         repairFormEntity.setLastModifiedDate(LocalDateTime.now());
         repairFormService.addRepairForm(repairFormEntity);
-
+        log.info("--User:" + userName + " edited repair form id:" + repairFormEntity.getId());
         return "redirect:/repairs/repairman/list";
 
     }

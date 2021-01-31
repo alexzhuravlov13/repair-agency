@@ -61,12 +61,15 @@ public class RepairFormControllerManager {
     @PostMapping("/list")
     public String getAllRepairForms(@ModelAttribute("filterDto") FilterDto filterDto) {
         filterRequest = filterDto;
+        log.info("--User:" + userName + " entered manager/list post endpoint");
+        log.info("--Filters:" + filterDto);
         return "redirect:/repairs/manager/list";
     }
 
     @GetMapping("/list/clear")
     public String clearFilters() {
         filterRequest = null;
+        log.info("--User:" + userName + " entered manager/list/clear endpoint");
         return "redirect:/repairs/manager/list";
     }
 
@@ -94,33 +97,26 @@ public class RepairFormControllerManager {
         return getModelAndView(pageNo, sortField, sortDir, page, basePath, modelAndView);
     }
 
-    private ModelAndView getModelAndView(@PathVariable("pageNo") int pageNo, @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir, Page<RepairFormEntity> page, String basePath, ModelAndView modelAndView) {
-        modelAndView.setViewName("repairFormUserList");
-        modelAndView.addObject("sortField", sortField);
-        modelAndView.addObject("sortDir", sortDir);
-        modelAndView.addObject("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-        return controllerUtil.
-                getModelAndViewAttributesForFormList(basePath, pageNo, page, page.getContent(), modelAndView);
-    }
-
     @GetMapping("/list/filter/page/{pageNo}")
     public ModelAndView findFiltered(@PathVariable(value = "pageNo") int pageNo,
                                      @RequestParam("filterField") String filterField,
                                      @RequestParam("sortField") String sortField,
                                      @RequestParam("sortDir") String sortDir) {
-        log.info("--User:" + userName + " entered /manager/list/page/" + pageNo + " endpoint");
+        log.info("--User:" + userName + " entered /manager/list/filter/page/" + pageNo + " endpoint");
         int pageSize = 10;
         Page<RepairFormEntity> page = getPagesByFilterField(pageNo, filterField, sortField, sortDir, pageSize);
 
         String basePath = "/repairs/manager/list";
 
         ModelAndView modelAndView = new ModelAndView();
+        log.info("Loaded: " + page.getContent().toString());
         return getModelAndView(pageNo, sortField, sortDir, page, basePath, modelAndView);
     }
 
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     @GetMapping("/edit/{repairFormId}")
     public String editManagerRepairForm(Model model, @PathVariable String repairFormId) {
+        log.info("--User:" + userName + " entered /manager/edit/" + repairFormId + " endpoint");
 
         List<Status> statuses = Arrays.asList(Status.CANCELED, Status.PAID, Status.WAITING_FOR_PAYMENT);
 
@@ -135,6 +131,7 @@ public class RepairFormControllerManager {
     @PostMapping("/editRepairForm")
     public String saveEditedRepairForm(Model model, @ModelAttribute("repairFormAttribute")
     @Validated RepairFormEntity repairFormEntity, BindingResult bindingResult) {
+        log.info("--User:" + userName + " entered /manager/editRepairForm endpoint");
 
         if (bindingResult.hasErrors()) {
             return addRepairFormAndReturnBackToEdit(model, repairFormEntity);
@@ -149,14 +146,25 @@ public class RepairFormControllerManager {
                 return addRepairFormAndReturnBackToEdit(model, repairFormEntity);
             }
             repairFormEntity.getAuthor().setAmount(newAmount);
+
         }
 
         repairFormEntity.setLastModifiedDate(LocalDateTime.now());
         repairFormService.addRepairForm(repairFormEntity);
-
+        log.info("--User:" + userName + " edited repair form id:" + repairFormEntity.getId());
         return "redirect:/repairs/manager/list";
 
     }
+
+    private ModelAndView getModelAndView(@PathVariable("pageNo") int pageNo, @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir, Page<RepairFormEntity> page, String basePath, ModelAndView modelAndView) {
+        modelAndView.setViewName("repairFormUserList");
+        modelAndView.addObject("sortField", sortField);
+        modelAndView.addObject("sortDir", sortDir);
+        modelAndView.addObject("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        return controllerUtil.
+                getModelAndViewAttributesForFormList(basePath, pageNo, page, page.getContent(), modelAndView);
+    }
+
 
     private void editFormAddAttributes(Model model, List<Status> statuses, RepairFormEntity repairForm, List<UserEntity> repairmans) {
         model.addAttribute("statuses", statuses);

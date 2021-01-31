@@ -26,4 +26,6 @@ public interface UserService {
     List<UserEntity> findUsersByRole(String role);
 
     boolean changeAmount(int userId, BigDecimal amount);
+
+
 }

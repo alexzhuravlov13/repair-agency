@@ -89,4 +89,5 @@ public class UserServiceImpl implements UserService {
         return byId.map(userEntity -> userEntity.getAmount().equals(amount)).orElse(false);
     }
 
+
 }

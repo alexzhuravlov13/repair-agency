@@ -68,13 +68,15 @@ public class RepairFormController {
         modelAndView.addObject("statusReady", Status.READY);
 
         paginatedListModelAddAttributes(sortField, sortDir, amount, modelAndView);
+        log.info("Loaded: " + page.getContent().toString());
+
         return controllerUtil.
                 getModelAndViewAttributesForFormList(basePath, pageNo, page, repairFormList, modelAndView);
     }
 
     @GetMapping("/add")
     public String addRepairForm(Model model) {
-
+        log.info("--User:" + userName + " entered /add endpoint");
         RepairFormDto repairFormDto = new RepairFormDtoBuilder()
                 .setAuthorId(getIdFromDbByAuthentication())
                 .setCreationDate(LocalDateTime.now())
@@ -87,6 +89,7 @@ public class RepairFormController {
     @PostMapping("/addRepairForm")
     public String saveRepairForm(Model model, @ModelAttribute("repairFormAttribute")
     @Validated RepairFormDto repairFormDto, BindingResult bindingResult) {
+        log.info("--User:" + userName + " entered /addRepairForm endpoint");
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("repairFormAttribute", repairFormDto);
@@ -95,6 +98,8 @@ public class RepairFormController {
 
         RepairFormEntity formFromDto = repairFormConverter.getFormFromDto(repairFormDto, Status.NEW);
         repairFormService.addRepairForm(formFromDto);
+        log.info("--User:" + userName + " add new repairForm" + formFromDto.toString());
+
         return "redirect:/repairs/list";
     }
 
@@ -102,6 +107,7 @@ public class RepairFormController {
     @GetMapping("/view/{repairFormId}")
     public ModelAndView showTicket(@PathVariable String repairFormId) {
         RepairFormEntity repairForm = repairFormService.getRepairForm(Integer.parseInt(repairFormId));
+        log.info("--User:" + userName + "entered /view/" + repairFormId + " endpoint");
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("repairForm", repairForm);
@@ -111,6 +117,7 @@ public class RepairFormController {
 
     @GetMapping("/review/{repairFormId}")
     public String reviewForm(Model model, @PathVariable String repairFormId) {
+        log.info("--User:" + userName + "entered /review/" + repairFormId + " endpoint");
         RepairFormEntity repairForm = repairFormService.getRepairForm(Integer.parseInt(repairFormId));
         model.addAttribute("repairFormAttribute", repairForm);
         return "repairFormReview";
@@ -119,7 +126,9 @@ public class RepairFormController {
     @PostMapping("/saveReview")
     public String reviewSave(@ModelAttribute("repairFormAttribute")
                              @Validated RepairFormEntity repairFormEntity) {
+        log.info("--User:" + userName + "entered /saveReview endpoint");
         repairFormService.updateRepairForm(repairFormEntity);
+        log.info("--User:" + userName + " edited repair form id:" + repairFormEntity.getId());
         return "redirect:/repairs/list";
     }
 
