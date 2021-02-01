@@ -34,7 +34,7 @@ public class UserEntity {
     @NonNull
     private String email;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     private Set<RoleEntity> roles;
 

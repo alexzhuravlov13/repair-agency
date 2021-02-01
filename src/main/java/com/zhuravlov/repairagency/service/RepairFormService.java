@@ -50,7 +50,6 @@ public class RepairFormService {
     }
 
     @Transactional
-
     public RepairFormEntity updateRepairForm(RepairFormEntity repairFormEntity) {
         repository.save(repairFormEntity);
         return repairFormEntity;
