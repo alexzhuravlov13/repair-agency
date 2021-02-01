@@ -5,8 +5,8 @@ import com.zhuravlov.repairagency.model.DTO.FilterDto;
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.model.entity.Status;
 import com.zhuravlov.repairagency.model.entity.UserEntity;
-import com.zhuravlov.repairagency.service.RepairFormService.RepairFormService;
-import com.zhuravlov.repairagency.service.UserService.UserService;
+import com.zhuravlov.repairagency.service.RepairFormService;
+import com.zhuravlov.repairagency.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,6 +45,7 @@ public class RepairFormControllerManager {
 
     private FilterDto filterRequest;
 
+    //TODO:move to service, in one transaction
     private void initLists() {
         allMasters = userService.findUsersByRole("ROLE_REPAIRMAN");
         allStatuses = repairFormService.findAllStatuses();
@@ -88,28 +89,13 @@ public class RepairFormControllerManager {
         } else {
             page = repairFormService.findAllPaginated(pageNo, pageSize, sortField, sortDir);
         }
+
         String basePath = "/repairs/manager/list";
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("filterDto", new FilterDto());
         modelAndView.addObject("masters", allMasters);
         modelAndView.addObject("statuses", allStatuses);
-        return getModelAndView(pageNo, sortField, sortDir, page, basePath, modelAndView);
-    }
-
-    @GetMapping("/list/filter/page/{pageNo}")
-    public ModelAndView findFiltered(@PathVariable(value = "pageNo") int pageNo,
-                                     @RequestParam("filterField") String filterField,
-                                     @RequestParam("sortField") String sortField,
-                                     @RequestParam("sortDir") String sortDir) {
-        log.info("--User:" + userName + " entered /manager/list/filter/page/" + pageNo + " endpoint");
-        int pageSize = 10;
-        Page<RepairFormEntity> page = getPagesByFilterField(pageNo, filterField, sortField, sortDir, pageSize);
-
-        String basePath = "/repairs/manager/list";
-
-        ModelAndView modelAndView = new ModelAndView();
-        log.info("Loaded: " + page.getContent().toString());
         return getModelAndView(pageNo, sortField, sortDir, page, basePath, modelAndView);
     }
 
@@ -122,9 +108,7 @@ public class RepairFormControllerManager {
 
         RepairFormEntity repairForm = repairFormService.getRepairForm(Integer.parseInt(repairFormId));
 
-        List<UserEntity> repairmans = userService.findUsersByRole("ROLE_REPAIRMAN");
-
-        editFormAddAttributes(model, statuses, repairForm, repairmans);
+        editFormAddAttributes(model, statuses, repairForm, allMasters);
         return "repairFormEdit";
     }
 
@@ -183,9 +167,9 @@ public class RepairFormControllerManager {
 
     private Page<RepairFormEntity> getPagesByFilterField(@PathVariable("pageNo") int pageNo, @RequestParam("filterField") String filterField, @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir, int pageSize) {
         Page<RepairFormEntity> page;
-        if (filterField.toLowerCase().equals("master")) {
+        if (filterField.equalsIgnoreCase("master")) {
             page = repairFormService.findRepairmanForms(Integer.parseInt(filterField), pageNo, pageSize, sortField, sortDir);
-        } else if (filterField.toLowerCase().equals("status")) {
+        } else if (filterField.equalsIgnoreCase("status")) {
             page = repairFormService.findByStatus(Status.valueOf(filterField), pageNo, pageSize, sortField, sortDir);
         } else page = null;
         return page;

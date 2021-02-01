@@ -1,4 +1,4 @@
-package com.zhuravlov.repairagency.service.RepairFormService;
+package com.zhuravlov.repairagency.service;
 
 import com.zhuravlov.repairagency.model.DTO.FilterDto;
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
@@ -20,43 +20,43 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class RepairFormServiceImpl implements RepairFormService {
+public class RepairFormService {
 
     @Autowired
     private RepairFormRepository repository;
 
-    @Override
+
     public Page<RepairFormEntity> findAllPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
         return repository.findAll(pageable);
     }
 
-    @Override
+
     public Page<RepairFormEntity> findUserRepairFormsPaginated(int id, int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
         return repository.findByAuthor_userId(id, pageable);
     }
 
-    @Override
+
     public Page<RepairFormEntity> findRepairmanForms(int id, int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
         return repository.findByRepairmanId(id, pageable);
     }
 
-    @Override
+
     public RepairFormEntity addRepairForm(RepairFormEntity repairForm) {
         repository.save(repairForm);
         return repairForm;
     }
 
     @Transactional
-    @Override
+
     public RepairFormEntity updateRepairForm(RepairFormEntity repairFormEntity) {
         repository.save(repairFormEntity);
         return repairFormEntity;
     }
 
-    @Override
+
     public RepairFormEntity getRepairForm(int id) {
         Optional<RepairFormEntity> repairFormOptional = repository.findById(id);
         if (repairFormOptional.isEmpty()) {
@@ -65,13 +65,13 @@ public class RepairFormServiceImpl implements RepairFormService {
         return repairFormOptional.get();
     }
 
-    @Override
+
     public List<RepairFormEntity> saveAll(List<RepairFormEntity> repairForms) {
         repository.saveAll(repairForms);
         return repairForms;
     }
 
-    @Override
+
     public Page<RepairFormEntity> findByStatus(Status status, int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
         Page<RepairFormEntity> byStatus = repository.findByStatus(status, pageable);
@@ -81,7 +81,7 @@ public class RepairFormServiceImpl implements RepairFormService {
         return byStatus;
     }
 
-    @Override
+
     public List<RepairFormEntity> findAll() {
         List<RepairFormEntity> all = repository.findAll();
         if (all.isEmpty()) {
@@ -90,12 +90,12 @@ public class RepairFormServiceImpl implements RepairFormService {
         return all;
     }
 
-    @Override
+
     public List<Status> findAllStatuses() {
         return Arrays.asList(Status.values());
     }
 
-    @Override
+
     public Page<RepairFormEntity> findFiltered(FilterDto filterRequest, int pageNo, int pageSize, String sortField, String sortDir) {
         log.info(filterRequest.toString());
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDir);
@@ -117,8 +117,8 @@ public class RepairFormServiceImpl implements RepairFormService {
         } else {
             page = findAllPaginated(pageNo, pageSize, sortField, sortDir);
         }
-        if (page == null || page.isEmpty()) {
-            throw new RepairFormNotFoundException();
+        if (page == null) {
+            throw new RepairFormNotFoundException("Repairs form not found");
         }
 
         return page;

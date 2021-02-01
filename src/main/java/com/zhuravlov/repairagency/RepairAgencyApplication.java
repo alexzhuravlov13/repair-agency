@@ -12,4 +12,6 @@ public class RepairAgencyApplication {
     }
 
     //TODO:validation of forms
+    //TODO:Objects.equals() where we compare objects and check for a null
+    //TODO:several queries in one transaction (in service)
 }
