@@ -44,6 +44,7 @@ public class RegistrationController {
             userService.addUser(userEntity);
         } catch (Exception e) {
             log.info("Registration canceled for" + userEntity.toString());
+            log.info("Exception:" + e.getMessage());
             return "redirect:registration?error";
         }
         log.info("Registration success for" + userEntity.toString());

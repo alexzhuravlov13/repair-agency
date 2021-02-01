@@ -11,5 +11,5 @@ public class RepairAgencyApplication {
         SpringApplication.run(RepairAgencyApplication.class, args);
     }
 
-    //TODO:refactor controllers, move business logic to services
+    //TODO:validation of forms
 }
