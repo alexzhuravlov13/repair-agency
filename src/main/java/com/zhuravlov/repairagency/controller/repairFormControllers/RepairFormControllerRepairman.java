@@ -27,6 +27,8 @@ import java.util.List;
 public class RepairFormControllerRepairman {
     String userName = "";
 
+    int pageSize = 10;
+
     @Autowired
     private ControllerUtil controllerUtil;
 
@@ -48,7 +50,6 @@ public class RepairFormControllerRepairman {
                                                     @RequestParam("sortField") String sortField,
                                                     @RequestParam("sortDir") String sortDir) {
         log.info("--User:" + userName + " entered /repairman/list/page/" + pageNo + " endpoint");
-        int pageSize = 10;
 
         int repairmanId = getIdFromDbByAuthentication();
         String basePath = "/repairs/repairman/list";

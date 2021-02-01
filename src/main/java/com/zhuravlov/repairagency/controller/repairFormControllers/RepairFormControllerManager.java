@@ -30,6 +30,8 @@ import java.util.List;
 public class RepairFormControllerManager {
     String userName = "";
 
+    int pageSize = 10;
+
     @Autowired
     private ControllerUtil controllerUtil;
 
@@ -79,8 +81,6 @@ public class RepairFormControllerManager {
                                                 @RequestParam("sortField") String sortField,
                                                 @RequestParam("sortDir") String sortDir) {
         log.info("--User:" + userName + " entered /manager/list/page/" + pageNo + " endpoint");
-
-        int pageSize = 10;
 
         Page<RepairFormEntity> page;
 

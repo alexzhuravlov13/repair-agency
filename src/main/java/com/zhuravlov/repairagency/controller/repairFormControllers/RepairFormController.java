@@ -27,6 +27,8 @@ import java.util.List;
 public class RepairFormController {
     String userName = "";
 
+    int pageSize = 10;
+
     @Autowired
     private ControllerUtil controllerUtil;
 
@@ -53,7 +55,6 @@ public class RepairFormController {
             @RequestParam("sortDir") String sortDir) {
 
         log.info("--User:" + userName + " entered /list/page/" + pageNo + " endpoint");
-        int pageSize = 10;
         int userId = getIdFromDbByAuthentication();
 
         Page<RepairFormEntity> page = repairFormService.findUserRepairFormsPaginated(userId, pageNo, pageSize, sortField, sortDir);
