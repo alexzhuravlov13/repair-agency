@@ -20,17 +20,17 @@ public class UserEntity {
     @GeneratedValue
     private Integer userId;
 
-    @NotBlank(message = "first name is required")
+    @NotBlank(message = "{registration.errorFirstName}")
     @NonNull
     private String firstName;
 
-    @NotBlank(message = "last name is required")
+    @NotBlank(message = "{registration.errorLastName}")
     @NonNull
     private String lastName;
 
-    @Email(message = "invalid email format")
+    @NotBlank(message = "{registration.errorEmailFormat}")
     @Column(unique = true)
-    @NotBlank(message = "email is required")
+    @NotBlank(message = "{registration.errorEmailBlank}")
     @NonNull
     private String email;
 
@@ -39,7 +39,7 @@ public class UserEntity {
     private Set<RoleEntity> roles;
 
     @NonNull
-    @NotBlank(message = "password is required")
+    @NotBlank(message = "{registration.errorPassword}")
     @EqualsAndHashCode.Exclude
     private String password;
 
