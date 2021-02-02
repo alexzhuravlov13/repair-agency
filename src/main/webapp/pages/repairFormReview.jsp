@@ -63,8 +63,8 @@
         <spring:message code="repairForm.review" var="reviewPh"/>
         <div class="row mb-3 ${status.error ? 'has-error' : ''}">
             <div class="col-xs-15">
-                <springForm:input type="text" path="feedback" class="form-control"
-                                  placeholder="${reviewPh}"/>
+                <strong><spring:message code="repairForm.review"/></strong>
+                <springForm:input type="text" path="feedback" class="form-control"/>
                 <springForm:errors path="feedback"/>
             </div>
         </div>
