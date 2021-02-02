@@ -1,6 +1,7 @@
 package com.zhuravlov.repairagency.config;
 
 import com.zhuravlov.repairagency.model.builder.RepairFormBuilder;
+import com.zhuravlov.repairagency.model.builder.UserEntityBuilder;
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.model.entity.Status;
 import com.zhuravlov.repairagency.model.entity.UserEntity;
@@ -47,7 +48,7 @@ public class InsertAdminAndRoles implements InitializingBean {
 
         int masterId = userService.findByUsername("master1@gmail.com").getUserId();
 
-        for (int i = 1; i < 13; i++) {
+        for (int i = 1; i < 6; i++) {
             RepairFormEntity repairFormEntity1 =
                     builderForm("Car" + i + " Blue",
                             "ShortDescription" + i, 1,
@@ -100,56 +101,35 @@ public class InsertAdminAndRoles implements InitializingBean {
 
         initUser("Manager", "Managerovich", "manager@gmail.com", "ROLE_MANAGER");
 
-        initUser("User", "Userovich", "User@gmail.com", "user@gmail.com", "ROLE_USER");
+        initUser("User", "Userovich", "User@gmail.com", "ROLE_USER");
 
-        initUser("Repairman1", "Master", "master1@gmail.com", "master1@gmail.com", "ROLE_REPAIRMAN");
+        initUser("Repairman1", "Master", "master1@gmail.com", "ROLE_REPAIRMAN");
 
-        initUser("Repairman2", "Master2", "master2@gmail.com", "master2@gmail.com", "ROLE_REPAIRMAN");
+        initUser("Repairman2", "Master2", "master2@gmail.com", "ROLE_REPAIRMAN");
     }
 
-    private void initUser(String alex, String zhuravlov, String s, String role_admin) {
-        UserEntity admin =
-                new UserEntity(
-                        alex,
-                        zhuravlov,
-                        s,
-                        "111111");
+    private void initUser(String firstName, String lastName, String email, String role) {
 
-        UserEntity byUsername = userService.findByUsername(s);
+        UserEntity user = new UserEntityBuilder()
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setPassword("111111")
+                .build();
+
+        UserEntity byUsername = userService.findByUsername(email);
 
         if (byUsername == null) {
-            userService.addUser(admin);
-        }
-
-        byUsername = userService.findByUsername(s);
-
-        byUsername.setRoles(new HashSet<>(Arrays.asList(
-                roleRepository.findByName("ROLE_USER"),
-                roleRepository.findByName(role_admin))));
-
-        userService.updateUser(byUsername);
-    }
-
-    private void initUser(String user2, String userovich, String s, String s2, String role_user) {
-        UserEntity user =
-                new UserEntity(
-                        user2,
-                        userovich,
-                        s,
-                        "111111");
-
-        UserEntity userbyUsername = userService.findByUsername(s2);
-
-        if (userbyUsername == null) {
             userService.addUser(user);
         }
 
-        userbyUsername = userService.findByUsername(s2);
+        byUsername = userService.findByUsername(email);
 
-        userbyUsername.setRoles(new HashSet<>(Arrays.asList(
-                roleRepository.findByName(role_user))));
+        byUsername.setRoles(new HashSet<>(Arrays.asList(
+                roleRepository.findByName("ROLE_USER"),
+                roleRepository.findByName(role))));
 
-        userService.updateUser(userbyUsername);
+        userService.updateUser(byUsername);
     }
 
     private void initRoles() {

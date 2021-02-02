@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -24,10 +25,13 @@ public class RepairFormEntity {
     @JoinColumn(name = "author_id")
     private UserEntity author;
 
+    @NotEmpty(message = "{repairForm.error}")
     private String car;
 
+    @NotEmpty(message = "{repairForm.error}")
     private String shortDescription;
 
+    @NotEmpty(message = "{repairForm.error}")
     private String description;
 
     private String feedback;

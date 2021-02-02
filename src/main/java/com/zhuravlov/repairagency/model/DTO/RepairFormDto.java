@@ -3,8 +3,8 @@ package com.zhuravlov.repairagency.model.DTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.lang.NonNull;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,12 +16,12 @@ public class RepairFormDto {
 
     private int authorId;
 
-    @NonNull
+    @NotEmpty(message = "{repairForm.error}")
     private String car;
 
-    @NonNull
+    @NotEmpty(message = "{repairForm.error}")
     private String shortDescription;
 
-    @NonNull
+    @NotEmpty(message = "{repairForm.error}")
     private String description;
 }

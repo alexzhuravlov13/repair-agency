@@ -77,7 +77,7 @@
         $("#locales").change(function () {
             const selectedOption = $('#locales').val();
             if (selectedOption !== '') {
-                window.location.replace('?lang=' + selectedOption);
+                window.location.replace('/?lang=' + selectedOption);
             }
         });
     });

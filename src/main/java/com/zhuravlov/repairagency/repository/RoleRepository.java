@@ -19,7 +19,8 @@ public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
     default RoleEntity createRoleIfNotFound(String name) {
         RoleEntity roleEntity = findByName(name);
         if (roleEntity == null) {
-            roleEntity = new RoleEntity(name);
+            roleEntity = new RoleEntity();
+            roleEntity.setName(name);
             save(roleEntity);
         }
         return roleEntity;

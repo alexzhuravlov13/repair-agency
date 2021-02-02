@@ -10,14 +10,12 @@ import java.util.Set;
 @Table(name = "roles")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class RoleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
     private String name;
 
     @ManyToMany(mappedBy = "roles")
