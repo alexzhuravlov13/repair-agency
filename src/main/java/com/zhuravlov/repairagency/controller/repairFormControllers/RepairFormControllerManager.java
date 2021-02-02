@@ -2,6 +2,7 @@ package com.zhuravlov.repairagency.controller.repairFormControllers;
 
 import com.zhuravlov.repairagency.controller.Util.ControllerUtil;
 import com.zhuravlov.repairagency.model.DTO.FilterDto;
+import com.zhuravlov.repairagency.model.DTO.MastersAndStatusesDto;
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.model.entity.Status;
 import com.zhuravlov.repairagency.model.entity.UserEntity;
@@ -47,10 +48,10 @@ public class RepairFormControllerManager {
 
     private FilterDto filterRequest;
 
-    //TODO:move to service, in one transaction
     private void initLists() {
-        allMasters = userService.findUsersByRole("ROLE_REPAIRMAN");
-        allStatuses = repairFormService.findAllStatuses();
+        MastersAndStatusesDto mastersAndStatuses = userService.getMastersAndStatuses();
+        allMasters = mastersAndStatuses.getMasters();
+        allStatuses = mastersAndStatuses.getStatuses();
     }
 
     @GetMapping("/list")
@@ -104,12 +105,16 @@ public class RepairFormControllerManager {
     public String editManagerRepairForm(Model model, @PathVariable String repairFormId) {
         log.info("--User:" + userName + " entered /manager/edit/" + repairFormId + " endpoint");
 
-        List<Status> statuses = Arrays.asList(Status.CANCELED, Status.PAID, Status.WAITING_FOR_PAYMENT);
+        List<Status> statuses = getManagerStatuses();
 
         RepairFormEntity repairForm = repairFormService.getRepairForm(Integer.parseInt(repairFormId));
 
         editFormAddAttributes(model, statuses, repairForm, allMasters);
         return "repairFormEdit";
+    }
+
+    private List<Status> getManagerStatuses() {
+        return Arrays.asList(Status.CANCELED, Status.PAID, Status.WAITING_FOR_PAYMENT);
     }
 
     @PostMapping("/editRepairForm")
@@ -151,6 +156,7 @@ public class RepairFormControllerManager {
 
 
     private void editFormAddAttributes(Model model, List<Status> statuses, RepairFormEntity repairForm, List<UserEntity> repairmans) {
+        model.addAttribute("statusReady", Status.READY);
         model.addAttribute("statuses", statuses);
         model.addAttribute("repairFormAttribute", repairForm);
         model.addAttribute("repairmans", repairmans);

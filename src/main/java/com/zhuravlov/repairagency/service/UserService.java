@@ -1,6 +1,8 @@
 package com.zhuravlov.repairagency.service;
 
 
+import com.zhuravlov.repairagency.model.DTO.MastersAndStatusesDto;
+import com.zhuravlov.repairagency.model.entity.Status;
 import com.zhuravlov.repairagency.model.entity.UserEntity;
 import com.zhuravlov.repairagency.repository.RoleRepository;
 import com.zhuravlov.repairagency.repository.UserRepository;
@@ -11,12 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -80,5 +80,14 @@ public class UserService {
         return byId.map(userEntity -> userEntity.getAmount().equals(amount)).orElse(false);
     }
 
+    @Transactional
+    public MastersAndStatusesDto getMastersAndStatuses(){
+        MastersAndStatusesDto lists = new MastersAndStatusesDto();
+        List<UserEntity> allMasters = userRepository.findByRoles_name("ROLE_REPAIRMAN");
+        List<Status> statuses = Arrays.asList(Status.values());
+        lists.setMasters(allMasters);
+        lists.setStatuses(statuses);
+        return lists;
+    }
 
 }

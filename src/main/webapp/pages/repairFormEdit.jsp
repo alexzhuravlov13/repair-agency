@@ -74,16 +74,25 @@
             </div>
         </div>
 
-
         <spring:message code="repairForm.Status"/>
         <div class="row mb-3 ${status.error ? 'has-error' : ''}">
-            <div class="col-xs-15">
-                <springForm:select
-                        cssClass="form-select form-select-sm"
-                        path="status"
-                        items="${statuses}"
-                        itemLabel="name" itemValue="name"/>
-            </div>
+            <jstlC:choose>
+                <jstlC:when test="${repairFormAttribute.status ne statusReady}">
+                    <div class="col-xs-15">
+                        <springForm:select
+                                cssClass="form-select form-select-sm"
+                                path="status"
+                                items="${statuses}"
+                                itemLabel="name" itemValue="name"/>
+                    </div>
+                </jstlC:when>
+                <jstlC:otherwise>
+                    <div class="col-xs-15">
+                        <springForm:input path="status" disabled="true" class="form-control"/>
+                    </div>
+                </jstlC:otherwise>
+            </jstlC:choose>
+
         </div>
 
         <jstlC:if test="${param.error != null}">
