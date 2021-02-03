@@ -3,6 +3,7 @@ package com.zhuravlov.repairagency.config;
 import com.zhuravlov.repairagency.model.builder.RepairFormBuilder;
 import com.zhuravlov.repairagency.model.builder.UserEntityBuilder;
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
+import com.zhuravlov.repairagency.model.entity.RoleEntity;
 import com.zhuravlov.repairagency.model.entity.Status;
 import com.zhuravlov.repairagency.model.entity.UserEntity;
 import com.zhuravlov.repairagency.repository.RoleRepository;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -124,10 +125,14 @@ public class InsertAdminAndRoles implements InitializingBean {
         }
 
         byUsername = userService.findByUsername(email);
+        String roleUser = "ROLE_USER";
+        HashSet<RoleEntity> userRoles = new HashSet<>(Collections.singletonList(
+                roleRepository.findByName(roleUser)));
 
-        byUsername.setRoles(new HashSet<>(Arrays.asList(
-                roleRepository.findByName("ROLE_USER"),
-                roleRepository.findByName(role))));
+        if (!role.equalsIgnoreCase(roleUser)) {
+            userRoles.add(roleRepository.findByName(role));
+        }
+        byUsername.setRoles(userRoles);
 
         userService.updateUser(byUsername);
     }

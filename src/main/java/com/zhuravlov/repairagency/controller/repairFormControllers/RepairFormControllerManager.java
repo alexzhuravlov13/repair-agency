@@ -170,14 +170,4 @@ public class RepairFormControllerManager {
         model.addAttribute("repairFormAttribute", repairFormEntity);
         return "redirect:/repairs/manager/edit/" + repairFormEntity.getId() + "?error";
     }
-
-    private Page<RepairFormEntity> getPagesByFilterField(@PathVariable("pageNo") int pageNo, @RequestParam("filterField") String filterField, @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir, int pageSize) {
-        Page<RepairFormEntity> page;
-        if (filterField.equalsIgnoreCase("master")) {
-            page = repairFormService.findRepairmanForms(Integer.parseInt(filterField), pageNo, pageSize, sortField, sortDir);
-        } else if (filterField.equalsIgnoreCase("status")) {
-            page = repairFormService.findByStatus(Status.valueOf(filterField), pageNo, pageSize, sortField, sortDir);
-        } else page = null;
-        return page;
-    }
 }

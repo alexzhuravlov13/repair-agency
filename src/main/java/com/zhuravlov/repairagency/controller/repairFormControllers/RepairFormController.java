@@ -111,8 +111,9 @@ public class RepairFormController {
 
     @GetMapping("/view/{repairFormId}")
     public ModelAndView showTicket(@PathVariable String repairFormId) {
-        RepairFormEntity repairForm = repairFormService.getRepairForm(Integer.parseInt(repairFormId));
         log.info("--User:" + userName + "entered /view/" + repairFormId + " endpoint");
+        RepairFormEntity repairForm = repairFormService.getRepairForm(Integer.parseInt(repairFormId));
+        log.info("--User:" + userName + "loads entity:" + repairForm);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("repairForm", repairForm);

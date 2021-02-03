@@ -18,11 +18,6 @@ public class RoleEntity {
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<UserEntity> users;
-
     @Override
     public String toString() {
         return name;
