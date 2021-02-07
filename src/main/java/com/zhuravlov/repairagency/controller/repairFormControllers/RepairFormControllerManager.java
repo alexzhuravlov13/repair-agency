@@ -72,7 +72,7 @@ public class RepairFormControllerManager {
 
     @GetMapping("/list/clear")
     public String clearFilters() {
-        filterRequest = null;
+        filterRequest = new FilterDto();
         log.info("--User:" + userName + " entered manager/list/clear endpoint");
         return "redirect:/repairs/manager/list";
     }
