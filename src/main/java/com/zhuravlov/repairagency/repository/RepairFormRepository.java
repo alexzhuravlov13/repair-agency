@@ -18,6 +18,4 @@ public interface RepairFormRepository extends JpaRepository<RepairFormEntity, In
 
     Page<RepairFormEntity> findByStatus(Status status, Pageable pageable);
 
-    Page<RepairFormEntity> findByRepairman_UserIdAndStatus(int id, Status status, Pageable pageable);
-
 }

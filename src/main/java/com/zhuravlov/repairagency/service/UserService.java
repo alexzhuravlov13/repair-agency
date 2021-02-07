@@ -50,10 +50,8 @@ public class UserService {
 
     public UserEntity getUser(int id) {
         Optional<UserEntity> userByIdOptional = userRepository.findById(id);
-        if (userByIdOptional.isEmpty()) {
-            throw new UsernameNotFoundException("User id:" + id + " not found");
-        }
-        return userByIdOptional.get();
+        return userByIdOptional
+                .orElseThrow(() -> new UsernameNotFoundException("User id:" + id + " not found"));
     }
 
     public UserEntity updateUser(UserEntity userEntity) {
@@ -81,7 +79,7 @@ public class UserService {
     }
 
     @Transactional
-    public MastersAndStatusesDto getMastersAndStatuses(){
+    public MastersAndStatusesDto getMastersAndStatuses() {
         MastersAndStatusesDto lists = new MastersAndStatusesDto();
         List<UserEntity> allMasters = userRepository.findByRoles_name("ROLE_REPAIRMAN");
         List<Status> statuses = Arrays.asList(Status.values());

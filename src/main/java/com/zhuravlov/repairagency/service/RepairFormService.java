@@ -60,10 +60,7 @@ public class RepairFormService {
 
     public RepairFormEntity getRepairForm(int id) {
         Optional<RepairFormEntity> repairFormOptional = repository.findById(id);
-        if (repairFormOptional.isEmpty()) {
-            throw new RepairFormNotFoundException();
-        }
-        return repairFormOptional.get();
+        return repairFormOptional.orElseThrow(RepairFormNotFoundException::new);
     }
 
 
@@ -75,20 +72,13 @@ public class RepairFormService {
 
     public Page<RepairFormEntity> findByStatus(Status status, int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
-        Page<RepairFormEntity> byStatus = repository.findByStatus(status, pageable);
-        if (byStatus.isEmpty()) {
-            throw new RepairFormNotFoundException();
-        }
-        return byStatus;
+        return repository.findByStatus(status, pageable);
     }
 
 
     public List<RepairFormEntity> findAll() {
-        List<RepairFormEntity> all = repository.findAll();
-        if (all.isEmpty()) {
-            throw new RepairFormNotFoundException();
-        }
-        return all;
+        Optional<List<RepairFormEntity>> all = Optional.of(repository.findAll());
+        return all.orElseThrow(RepairFormNotFoundException::new);
     }
 
     public List<Status> findAllStatuses() {
@@ -105,35 +95,6 @@ public class RepairFormService {
 
         return repository.findAll(repairFormEntitySpecification, pageable);
     }
-
-/*
-    public Page<RepairFormEntity> findFiltered(FilterDto filterRequest, int pageNo, int pageSize, String sortField, String sortDir) {
-        log.info(filterRequest.toString());
-        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDir);
-
-        String masterId = filterRequest.getMasterId();
-        String status = filterRequest.getStatus();
-
-        boolean statusIsNotPresent = status == null || status.isEmpty();
-        boolean masterIdIsNotPresent = masterId == null || masterId.isEmpty();
-
-        Page<RepairFormEntity> page;
-
-        if (masterIdIsNotPresent && !statusIsNotPresent) {
-            page = repository.findByStatus(Status.valueOf(status), pageable);
-        } else if (statusIsNotPresent && !masterIdIsNotPresent) {
-            page = repository.findByRepairman_UserId(Integer.parseInt(masterId), pageable);
-        } else if (!statusIsNotPresent) {
-            page = repository.findByRepairman_UserIdAndStatus(Integer.parseInt(masterId), Status.valueOf(status), pageable);
-        } else {
-            page = findAllPaginated(pageNo, pageSize, sortField, sortDir);
-        }
-        if (page == null) {
-            throw new RepairFormNotFoundException("Repairs form not found");
-        }
-
-        return page;
-    }*/
 
     private Pageable getPageable(int pageNo, int pageSize, String sortField, String sortDirection) {
         Sort sort = sortDirection
