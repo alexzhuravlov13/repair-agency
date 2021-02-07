@@ -54,7 +54,7 @@
         </div>
         <springForm:hidden path="description"/>
 
-        <springForm:hidden path="repairmanId"/>
+        <springForm:hidden path="repairman"/>
 
         <spring:message code="repairForm.Status"/>
         <div class="row mb-3 ${status.error ? 'has-error' : ''}">

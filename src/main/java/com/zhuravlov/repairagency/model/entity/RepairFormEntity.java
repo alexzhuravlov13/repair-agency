@@ -38,7 +38,9 @@ public class RepairFormEntity {
 
     private String feedback;
 
-    private int repairmanId;
+    @ManyToOne
+    @JoinColumn(name = "repairman_id")
+    private UserEntity repairman;
 
     @Enumerated(EnumType.STRING)
     private Status status;

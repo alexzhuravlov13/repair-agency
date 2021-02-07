@@ -68,7 +68,7 @@
                 <springForm:select
                         cssClass="form-select form-select-sm"
                         multiple="true"
-                        path="repairmanId"
+                        path="repairman"
                         items="${repairmans}"
                         itemLabel="firstName" itemValue="userId"/>
             </div>

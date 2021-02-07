@@ -54,7 +54,7 @@
         </div>
         <springForm:hidden path="description"/>
 
-        <springForm:hidden path="repairmanId"/>
+        <springForm:hidden path="repairman"/>
         <springForm:hidden path="status"/>
 
         <springForm:hidden path="price"/>

@@ -13,12 +13,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<nav class="nnavbar fixed-bottom navbar-light" style="background-color: #eee;">
-    <div class="container-fluid">
+<div class="container-fluid">
+    <nav class="navbar fixed-bottom navbar-light" style="background-color: #eee;">
+        <div class="container-fluid">
         <span class="nav-link active"><a href="mailto:alexzhuravlov13@gmail.com"><spring:message
                 code="feedback"/></a></span>
-    </div>
-</nav>
+        </div>
+    </nav>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>

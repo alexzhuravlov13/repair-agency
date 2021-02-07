@@ -44,8 +44,8 @@ public class RepairFormBuilder {
         return this;
     }
 
-    public RepairFormBuilder setRepairmanId(int repairmanId) {
-        this.repairForm.setRepairmanId(repairmanId);
+    public RepairFormBuilder setRepairmanId(UserEntity repairman) {
+        this.repairForm.setRepairman(repairman);
         return this;
     }
 

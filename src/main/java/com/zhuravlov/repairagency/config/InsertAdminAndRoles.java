@@ -88,9 +88,10 @@ public class InsertAdminAndRoles implements InitializingBean {
 
     private RepairFormBuilder builderForm(String car, String shortDescription, int authorId, String description, Status status, int repairmanId) {
         RepairFormBuilder builder = builderForm(car, shortDescription, authorId, description, status);
+        UserEntity repairman = userService.getUser(repairmanId);
 
         if (repairmanId > 0) {
-            builder.setRepairmanId(repairmanId);
+            builder.setRepairmanId(repairman);
         }
 
         return builder;

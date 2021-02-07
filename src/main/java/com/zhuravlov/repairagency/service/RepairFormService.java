@@ -14,8 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +40,7 @@ public class RepairFormService {
 
     public Page<RepairFormEntity> findRepairmanForms(int id, int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
-        return repository.findByRepairmanId(id, pageable);
+        return repository.findByRepairman_UserId(id, pageable);
     }
 
 
@@ -112,9 +110,9 @@ public class RepairFormService {
         if (masterIdIsNotPresent && !statusIsNotPresent) {
             page = repository.findByStatus(Status.valueOf(status), pageable);
         } else if (statusIsNotPresent && !masterIdIsNotPresent) {
-            page = repository.findByRepairmanId(Integer.parseInt(masterId), pageable);
+            page = repository.findByRepairman_UserId(Integer.parseInt(masterId), pageable);
         } else if (!statusIsNotPresent) {
-            page = repository.findByRepairmanIdAndStatus(Integer.parseInt(masterId), Status.valueOf(status), pageable);
+            page = repository.findByRepairman_UserIdAndStatus(Integer.parseInt(masterId), Status.valueOf(status), pageable);
         } else {
             page = findAllPaginated(pageNo, pageSize, sortField, sortDir);
         }
