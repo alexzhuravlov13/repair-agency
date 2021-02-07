@@ -1,6 +1,7 @@
 package com.zhuravlov.repairagency.service;
 
 import com.zhuravlov.repairagency.model.DTO.FilterDto;
+import com.zhuravlov.repairagency.model.RepairFormSpecs;
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.model.entity.Status;
 import com.zhuravlov.repairagency.model.exception.RepairFormNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,12 +91,22 @@ public class RepairFormService {
         return all;
     }
 
-
     public List<Status> findAllStatuses() {
         return Arrays.asList(Status.values());
     }
 
+    public Page<RepairFormEntity> findFiltered(Integer masterId, Status status, int pageNo, int pageSize, String sortField, String sortDir) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDir);
 
+        Specification<RepairFormEntity> masterSpec = RepairFormSpecs.masterEquals(masterId);
+        Specification<RepairFormEntity> statusSpec = RepairFormSpecs.statusEquals(status);
+
+        Specification<RepairFormEntity> repairFormEntitySpecification = Specification.where(masterSpec).and(statusSpec);
+
+        return repository.findAll(repairFormEntitySpecification, pageable);
+    }
+
+/*
     public Page<RepairFormEntity> findFiltered(FilterDto filterRequest, int pageNo, int pageSize, String sortField, String sortDir) {
         log.info(filterRequest.toString());
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDir);
@@ -121,7 +133,7 @@ public class RepairFormService {
         }
 
         return page;
-    }
+    }*/
 
     private Pageable getPageable(int pageNo, int pageSize, String sortField, String sortDirection) {
         Sort sort = sortDirection

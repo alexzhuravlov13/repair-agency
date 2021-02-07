@@ -46,7 +46,7 @@ public class RepairFormControllerManager {
 
     private List<UserEntity> allMasters;
 
-    private FilterDto filterRequest;
+    private FilterDto  filterRequest = new FilterDto();
 
     private void initLists() {
         MastersAndStatusesDto mastersAndStatuses = userService.getMastersAndStatuses();
@@ -83,13 +83,8 @@ public class RepairFormControllerManager {
                                                 @RequestParam("sortDir") String sortDir) {
         log.info("--User:" + userName + " entered /manager/list/page/" + pageNo + " endpoint");
 
-        Page<RepairFormEntity> page;
-
-        if (filterRequest != null) {
-            page = repairFormService.findFiltered(filterRequest, pageNo, pageSize, sortField, sortDir);
-        } else {
-            page = repairFormService.findAllPaginated(pageNo, pageSize, sortField, sortDir);
-        }
+        Page<RepairFormEntity> page
+                = repairFormService.findFiltered(filterRequest.getMasterId(), filterRequest.getStatus(), pageNo, pageSize, sortField, sortDir);
 
         String basePath = "/repairs/manager/list";
 
