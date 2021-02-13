@@ -49,7 +49,7 @@ public class InsertAdminAndRoles implements InitializingBean {
 
         int masterId = userService.findByUsername("master1@gmail.com").getUserId();
 
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i <10; i++) {
             RepairFormEntity repairFormEntity1 =
                     builderForm("Car" + i + " Blue",
                             "ShortDescription" + i, 1,

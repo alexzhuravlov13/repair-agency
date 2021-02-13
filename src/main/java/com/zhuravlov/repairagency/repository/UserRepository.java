@@ -21,6 +21,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Transactional
     @Modifying
     @Query("UPDATE UserEntity u SET u.amount = ?2 WHERE u.userId = ?1")
-    void changeUserAmount(@Param(value = "id") int id, @Param(value = "amount") BigDecimal amount);
+    void changeUserAmount(@Param(value = "userId") int userId, @Param(value = "amount") BigDecimal amount);
 
 }

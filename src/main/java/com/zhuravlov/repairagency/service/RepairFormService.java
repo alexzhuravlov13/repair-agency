@@ -1,6 +1,5 @@
 package com.zhuravlov.repairagency.service;
 
-import com.zhuravlov.repairagency.model.DTO.FilterDto;
 import com.zhuravlov.repairagency.model.RepairFormSpecs;
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.model.entity.Status;
@@ -34,15 +33,15 @@ public class RepairFormService {
     }
 
 
-    public Page<RepairFormEntity> findUserRepairFormsPaginated(int id, int pageNo, int pageSize, String sortField, String sortDirection) {
+    public Page<RepairFormEntity> findUserRepairFormsPaginated(int userId, int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
-        return repository.findByAuthor_userId(id, pageable);
+        return repository.findByAuthor_UserId(userId, pageable);
     }
 
 
-    public Page<RepairFormEntity> findRepairmanForms(int id, int pageNo, int pageSize, String sortField, String sortDirection) {
+    public Page<RepairFormEntity> findRepairmanForms(int userId, int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
-        return repository.findByRepairman_UserId(id, pageable);
+        return repository.findByRepairman_UserId(userId, pageable);
     }
 
 
@@ -85,10 +84,10 @@ public class RepairFormService {
         return Arrays.asList(Status.values());
     }
 
-    public Page<RepairFormEntity> findFiltered(Integer masterId, Status status, int pageNo, int pageSize, String sortField, String sortDir) {
+    public Page<RepairFormEntity> findFiltered(Integer userId, Status status, int pageNo, int pageSize, String sortField, String sortDir) {
         Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDir);
 
-        Specification<RepairFormEntity> masterSpec = RepairFormSpecs.masterEquals(masterId);
+        Specification<RepairFormEntity> masterSpec = RepairFormSpecs.masterEquals(userId);
         Specification<RepairFormEntity> statusSpec = RepairFormSpecs.statusEquals(status);
 
         Specification<RepairFormEntity> repairFormEntitySpecification = Specification.where(masterSpec).and(statusSpec);

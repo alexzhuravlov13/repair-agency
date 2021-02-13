@@ -103,7 +103,7 @@
                 <th scope="col"><spring:message code="repairForm.ShortDescription"/></th>
                 <sec:authorize access="hasRole('ROLE_MANAGER')">
                     <th scope="col"><a
-                            href="${basePath}/page/${currentPage}?sortField=repairmanId&sortDir=${reverseSortDir}">
+                            href="${basePath}/page/${currentPage}?sortField=repairman&sortDir=${reverseSortDir}">
                         <spring:message code="repairFormEdit.repairman"/></a></th>
                 </sec:authorize>
                 <th scope="col"><a href="${basePath}/page/${currentPage}?sortField=status&sortDir=${reverseSortDir}">

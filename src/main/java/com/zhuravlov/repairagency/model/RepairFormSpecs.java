@@ -2,17 +2,16 @@ package com.zhuravlov.repairagency.model;
 
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.model.entity.Status;
-import com.zhuravlov.repairagency.model.entity.UserEntity;
 import org.springframework.data.jpa.domain.Specification;
 
 public class RepairFormSpecs {
 
     /** if master == null then specification is ignored */
-    public static Specification<RepairFormEntity> masterEquals(Integer masterId) {
+    public static Specification<RepairFormEntity> masterEquals(Integer userId) {
         return (root, query, builder) ->
-                masterId == null ?
+                userId == null ?
                         builder.conjunction() :
-                        builder.equal(root.get("repairman").get("userId"), masterId);
+                        builder.equal(root.get("repairman").get("userId"), userId);
     }
 
     /** if status == null then specification is ignored */

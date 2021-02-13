@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 public interface RepairFormRepository extends JpaRepository<RepairFormEntity, Integer>,
         JpaSpecificationExecutor<RepairFormEntity> {
 
-    Page<RepairFormEntity> findByAuthor_userId(int id, Pageable pageable);
+    Page<RepairFormEntity> findByAuthor_UserId(int userId, Pageable pageable);
 
-    Page<RepairFormEntity> findByRepairman_UserId(int id, Pageable pageable);
+    Page<RepairFormEntity> findByRepairman_UserId(int userId, Pageable pageable);
 
     Page<RepairFormEntity> findByStatus(Status status, Pageable pageable);
 
