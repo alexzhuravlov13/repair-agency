@@ -1,6 +1,8 @@
 # repair-agency
 Repair agency demo by Oleksiy Zhuravlov
 
+You can find DB name and url in properties file. Tables will create automatically.
+
 Ремонтне агенство
 
 Існують ролі: менеджер, майстер, користувач.
