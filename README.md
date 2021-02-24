@@ -1,7 +1,8 @@
 # repair-agency
 Repair agency demo by Oleksiy Zhuravlov
 
-You can find DB name and url in properties file. Tables will create automatically.
+You can find DB name and url in repair-agency/src/main/resources/application.properties file. Tables will create automatically.
+After work, spring will automatically drop tables. You can choose this in prorepties.
 
 Ремонтне агенство
 
