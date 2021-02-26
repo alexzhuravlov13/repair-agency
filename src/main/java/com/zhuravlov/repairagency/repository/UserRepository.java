@@ -17,8 +17,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findByEmail(String email);
 
     List<UserEntity> findByRoles_name(String name);
-
-    @Transactional
+    
     @Modifying
     @Query("UPDATE UserEntity u SET u.amount = ?2 WHERE u.userId = ?1")
     void changeUserAmount(@Param(value = "userId") int userId, @Param(value = "amount") BigDecimal amount);

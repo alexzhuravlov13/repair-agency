@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class ExceptionController {
 
-    /*@ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = Exception.class)
     public ModelAndView handleError(HttpServletRequest req, Exception ex) {
         log.error("!!!Request:" + req.getRequestURL() + " raised " + ex);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", ex.getMessage());
         modelAndView.setViewName("error");
         return modelAndView;
-    }*/
+    }
 
 
 }

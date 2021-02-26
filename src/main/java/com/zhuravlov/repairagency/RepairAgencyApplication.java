@@ -10,11 +10,4 @@ public class RepairAgencyApplication {
     public static void main(String[] args) {
         SpringApplication.run(RepairAgencyApplication.class, args);
     }
-
-    //TODO:validation of forms
-    //TODO:Objects.equals() where we compare objects and check for a null
-    //TODO:several queries in one transaction (in service)
-    //TODO:Pagination from property
-    //TODO:@AutentaticationalPrincipal
-    //TODO:transactionals only when couple actions
 }
