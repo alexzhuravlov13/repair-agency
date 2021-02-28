@@ -29,7 +29,6 @@ import java.util.List;
 @RequestMapping("/repairs/manager")
 @Slf4j
 public class RepairFormControllerManager {
-    String userName = "";
 
     int pageSize = 10;
 
@@ -57,15 +56,14 @@ public class RepairFormControllerManager {
     @GetMapping("/list")
     public ModelAndView getAllRepairForms() {
         initLists();
-        userName = controllerUtil.getUserName();
-        log.info("--User:" + userName + " entered /manager/list endpoint");
+        log.info("--User:" + controllerUtil.getUserName() + " entered /manager/list endpoint");
         return findAllRepairsPaginated(1, "creationDate", "desc");
     }
 
     @PostMapping("/list")
     public String getAllRepairForms(@ModelAttribute("filterDto") FilterDto filterDto) {
         filterRequest = filterDto;
-        log.info("--User:" + userName + " entered manager/list post endpoint");
+        log.info("--User:" + controllerUtil.getUserName() + " entered manager/list post endpoint");
         log.info("--Filters:" + filterDto);
         return "redirect:/repairs/manager/list";
     }
@@ -73,7 +71,7 @@ public class RepairFormControllerManager {
     @GetMapping("/list/clear")
     public String clearFilters() {
         filterRequest = new FilterDto();
-        log.info("--User:" + userName + " entered manager/list/clear endpoint");
+        log.info("--User:" + controllerUtil.getUserName() + " entered manager/list/clear endpoint");
         return "redirect:/repairs/manager/list";
     }
 
@@ -81,7 +79,7 @@ public class RepairFormControllerManager {
     public ModelAndView findAllRepairsPaginated(@PathVariable(value = "pageNo") int pageNo,
                                                 @RequestParam("sortField") String sortField,
                                                 @RequestParam("sortDir") String sortDir) {
-        log.info("--User:" + userName + " entered /manager/list/page/" + pageNo + " endpoint");
+        log.info("--User:" + controllerUtil.getUserName() + " entered /manager/list/page/" + pageNo + " endpoint");
 
         Page<RepairFormEntity> page
                 = repairFormService.findFiltered(filterRequest.getMasterId(), filterRequest.getStatus(), pageNo, pageSize, sortField, sortDir);
@@ -98,7 +96,7 @@ public class RepairFormControllerManager {
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     @GetMapping("/edit/{repairFormId}")
     public String editManagerRepairForm(Model model, @PathVariable String repairFormId) {
-        log.info("--User:" + userName + " entered /manager/edit/" + repairFormId + " endpoint");
+        log.info("--User:" + controllerUtil.getUserName() + " entered /manager/edit/" + repairFormId + " endpoint");
 
         List<Status> statuses = getManagerStatuses();
 
@@ -115,7 +113,7 @@ public class RepairFormControllerManager {
     @PostMapping("/editRepairForm")
     public String saveEditedRepairForm(Model model, @ModelAttribute("repairFormAttribute")
     @Validated RepairFormEntity repairFormEntity, BindingResult bindingResult) {
-        log.info("--User:" + userName + " entered /manager/editRepairForm endpoint");
+        log.info("--User:" + controllerUtil.getUserName() + " entered /manager/editRepairForm endpoint");
 
         if (bindingResult.hasErrors()) {
             return addRepairFormAndReturnBackToEdit(model, repairFormEntity);
@@ -135,7 +133,7 @@ public class RepairFormControllerManager {
 
         repairFormEntity.setLastModifiedDate(LocalDateTime.now());
         repairFormService.addRepairForm(repairFormEntity);
-        log.info("--User:" + userName + " edited repair form id:" + repairFormEntity.getId());
+        log.info("--User:" + controllerUtil.getUserName() + " edited repair form id:" + repairFormEntity.getId());
         return "redirect:/repairs/manager/list";
 
     }
