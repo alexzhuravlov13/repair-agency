@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,26 +43,29 @@ public class RepairFormController {
     private RepairFormConverter repairFormConverter;
 
     @GetMapping("/list")
-    public ModelAndView getRepairFormList(Model model) {
+    public ModelAndView getRepairFormList(HttpServletRequest request) {
+        request.getSession().setAttribute("username", controllerUtil.getUserName());
+        request.getSession().setAttribute("userId", getIdFromDbByAuthentication());
+
         log.info("--User:" + controllerUtil.getUserName() + " entered /list endpoint");
-        return findUsersRepairsPaginated(1, "creationDate", "desc");
+        return findUsersRepairsPaginated(request, 1, "creationDate", "desc");
     }
 
     @GetMapping("/list/page/{pageNo}")
     public ModelAndView findUsersRepairsPaginated(
+            HttpServletRequest request,
             @PathVariable(value = "pageNo") int pageNo,
             @RequestParam("sortField") String sortField,
             @RequestParam("sortDir") String sortDir) {
 
         log.info("--User:" + controllerUtil.getUserName() + " entered /list/page/" + pageNo + " endpoint");
-        int userId = getIdFromDbByAuthentication();
+
+        int userId =  (Integer)request.getSession().getAttribute("userId");
 
         Page<RepairFormEntity> page = repairFormService.findUserRepairFormsPaginated(userId, pageNo, pageSize, sortField, sortDir);
         List<RepairFormEntity> repairFormList = page.getContent();
 
-        int id = getIdFromDbByAuthentication();
-
-        String amount = String.valueOf(userService.getUser(id).getAmount());
+        String amount = String.valueOf(userService.getUser(userId).getAmount());
         String basePath = "/repairs/list";
 
         ModelAndView modelAndView = new ModelAndView();
@@ -75,10 +79,11 @@ public class RepairFormController {
     }
 
     @GetMapping("/add")
-    public String addRepairForm(Model model) {
+    public String addRepairForm(HttpServletRequest request, Model model) {
         log.info("--User:" + controllerUtil.getUserName() + " entered /add endpoint");
+        int userId =  (Integer)request.getSession().getAttribute("userId");
         RepairFormDto repairFormDto = new RepairFormDtoBuilder()
-                .setAuthorId(getIdFromDbByAuthentication())
+                .setAuthorId(userId)
                 .setCreationDate(LocalDateTime.now())
                 .build();
 
