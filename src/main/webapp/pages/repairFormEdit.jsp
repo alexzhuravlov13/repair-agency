@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://example.com/functions" prefix="f" %>
 <!doctype html>
 <html>
 <head>
@@ -32,7 +33,7 @@
         <div class="row mb-3">
             <div class="col-xs-15">
                 <strong><spring:message
-                        code="repairForm.Created"/></strong>: ${repairFormAttribute.creationDate.toLocalDate()}
+                        code="repairForm.Created"/></strong>:${f:formatLocalDateTime(repairFormAttribute.creationDate, 'dd.MM.yyyy HH:mm')}
             </div>
         </div>
         <springForm:hidden path="creationDate"/>

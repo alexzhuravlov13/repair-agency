@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://example.com/functions" prefix="f" %>
 
 <!doctype html>
 <html lang="en">
@@ -129,7 +130,7 @@
                         </c:otherwise>
                     </c:choose>
 
-                    <td>${repairForm.creationDate.toLocalDate()}</td>
+                    <td>${f:formatLocalDateTime(repairForm.creationDate, 'dd.MM.yyyy HH:mm')}</td>
                     <td>${repairForm.author.firstName} ${repairForm.author.lastName}</td>
                     <td>${repairForm.car} </td>
                     <td>${repairForm.shortDescription} </td>

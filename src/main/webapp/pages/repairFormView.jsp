@@ -2,6 +2,7 @@
 <%@ taglib prefix="jstlC" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://example.com/functions" prefix="f" %>
 <!doctype html>
 <html>
 <head>
@@ -28,7 +29,7 @@
 
         <div class="row mb-3">
             <div class="col-xs-15">
-                <strong><spring:message code="repairForm.Created"/></strong>: ${repairForm.creationDate.toLocalDate()}
+                <strong><spring:message code="repairForm.Created"/></strong>: ${f:formatLocalDateTime(repairForm.creationDate, 'dd.MM.yyyy HH:mm')}
             </div>
         </div>
 
