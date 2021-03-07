@@ -3,7 +3,7 @@ package com.zhuravlov.repairagency.model.converter;
 import com.zhuravlov.repairagency.model.DTO.RepairFormDto;
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
 import com.zhuravlov.repairagency.model.entity.Status;
-import com.zhuravlov.repairagency.service.UserService;
+import com.zhuravlov.repairagency.unit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
