@@ -58,6 +58,9 @@ dependencies {
 
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
 
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.4.5'
+
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 

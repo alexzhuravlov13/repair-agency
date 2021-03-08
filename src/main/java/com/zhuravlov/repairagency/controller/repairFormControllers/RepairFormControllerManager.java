@@ -45,7 +45,7 @@ public class RepairFormControllerManager {
 
     private List<UserEntity> allMasters;
 
-    private FilterDto  filterRequest = new FilterDto();
+    private FilterDto filterRequest = new FilterDto();
 
     private void initLists() {
         MastersAndStatusesDto mastersAndStatuses = userService.getMastersAndStatuses();

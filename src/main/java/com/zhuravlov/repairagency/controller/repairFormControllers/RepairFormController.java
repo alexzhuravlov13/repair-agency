@@ -60,7 +60,7 @@ public class RepairFormController {
 
         log.info("--User:" + controllerUtil.getUserName() + " entered /list/page/" + pageNo + " endpoint");
 
-        int userId =  (Integer)request.getSession().getAttribute("userId");
+        int userId = (Integer) request.getSession().getAttribute("userId");
 
         Page<RepairFormEntity> page = repairFormService.findUserRepairFormsPaginated(userId, pageNo, pageSize, sortField, sortDir);
         List<RepairFormEntity> repairFormList = page.getContent();
@@ -81,7 +81,7 @@ public class RepairFormController {
     @GetMapping("/add")
     public String addRepairForm(HttpServletRequest request, Model model) {
         log.info("--User:" + controllerUtil.getUserName() + " entered /add endpoint");
-        int userId =  (Integer)request.getSession().getAttribute("userId");
+        int userId = (Integer) request.getSession().getAttribute("userId");
         RepairFormDto repairFormDto = new RepairFormDtoBuilder()
                 .setAuthorId(userId)
                 .setCreationDate(LocalDateTime.now())

@@ -23,15 +23,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class RepairFormServiceTest {
-    @InjectMocks
-    private RepairFormService service;
-
-    @Mock
-    private RepairFormRepository repository;
     private final String SORT_FIElD_CREATION_DATE = "creationDate";
     private final String SORT_DIR_DESC = "desc";
     private final int PAGE_NO_ONE = 1;
     private final int PAGE_SIZE_TEN = 10;
+    @InjectMocks
+    private RepairFormService service;
+    @Mock
+    private RepairFormRepository repository;
 
     @BeforeEach
     void setUp() {

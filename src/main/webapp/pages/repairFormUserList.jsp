@@ -11,8 +11,8 @@
 <head>
     <title><spring:message code="repairForm.title"/></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+          rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>

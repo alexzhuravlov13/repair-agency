@@ -29,7 +29,8 @@
 
         <div class="row mb-3">
             <div class="col-xs-15">
-                <strong><spring:message code="repairForm.Created"/></strong>: ${f:formatLocalDateTime(repairForm.creationDate, 'dd.MM.yyyy HH:mm')}
+                <strong><spring:message
+                        code="repairForm.Created"/></strong>: ${f:formatLocalDateTime(repairForm.creationDate, 'dd.MM.yyyy HH:mm')}
             </div>
         </div>
 

@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,7 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findByEmail(String email);
 
     List<UserEntity> findByRoles_name(String name);
-    
+
     @Modifying
     @Query("UPDATE UserEntity u SET u.amount = ?2 WHERE u.userId = ?1")
     void changeUserAmount(@Param(value = "userId") int userId, @Param(value = "amount") BigDecimal amount);
