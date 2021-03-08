@@ -10,8 +10,12 @@ import java.time.LocalDateTime;
 public class RepairFormBuilder {
     private RepairFormEntity repairForm;
 
-    public RepairFormBuilder() {
+    private RepairFormBuilder() {
         this.repairForm = new RepairFormEntity();
+    }
+
+    public static RepairFormBuilder getInstance() {
+        return new RepairFormBuilder();
     }
 
     public RepairFormBuilder setCreationDate(LocalDateTime creationDate) {
@@ -67,5 +71,6 @@ public class RepairFormBuilder {
     public RepairFormEntity build() {
         return repairForm;
     }
+
 
 }

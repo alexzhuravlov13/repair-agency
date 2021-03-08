@@ -8,8 +8,12 @@ import java.time.LocalDateTime;
 public class RepairFormDtoBuilder {
     private RepairFormDto repairFormDto;
 
-    public RepairFormDtoBuilder() {
+    private RepairFormDtoBuilder() {
         this.repairFormDto = new RepairFormDto();
+    }
+
+    public static RepairFormDtoBuilder getInstance() {
+        return new RepairFormDtoBuilder();
     }
 
     public RepairFormDtoBuilder setCreationDate(LocalDateTime creationDate) {
@@ -40,6 +44,4 @@ public class RepairFormDtoBuilder {
     public RepairFormDto build() {
         return repairFormDto;
     }
-
-
 }

@@ -82,7 +82,7 @@ public class RepairFormController {
     public String addRepairForm(HttpServletRequest request, Model model) {
         log.info("--User:" + controllerUtil.getUserName() + " entered /add endpoint");
         int userId = (Integer) request.getSession().getAttribute("userId");
-        RepairFormDto repairFormDto = new RepairFormDtoBuilder()
+        RepairFormDto repairFormDto = RepairFormDtoBuilder.getInstance()
                 .setAuthorId(userId)
                 .setCreationDate(LocalDateTime.now())
                 .build();

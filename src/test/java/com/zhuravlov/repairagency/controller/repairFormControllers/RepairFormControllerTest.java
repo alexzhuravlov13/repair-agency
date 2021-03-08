@@ -3,7 +3,6 @@ package com.zhuravlov.repairagency.controller.repairFormControllers;
 import com.zhuravlov.repairagency.model.DTO.RepairFormDto;
 import com.zhuravlov.repairagency.model.builder.RepairFormDtoBuilder;
 import com.zhuravlov.repairagency.model.entity.RepairFormEntity;
-import com.zhuravlov.repairagency.model.entity.Status;
 import com.zhuravlov.repairagency.unit.service.RepairFormService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ class RepairFormControllerTest {
 
     @Test
     void saveRepairForm() throws Exception {
-        RepairFormDto repairFormDto = new RepairFormDtoBuilder()
+        RepairFormDto repairFormDto = RepairFormDtoBuilder.getInstance()
                 .setAuthorId(3)
                 .setCar("car")
                 .setShortDescription("short")

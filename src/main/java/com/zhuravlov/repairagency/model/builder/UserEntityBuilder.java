@@ -9,8 +9,12 @@ import java.util.Set;
 public class UserEntityBuilder {
     private UserEntity userEntity;
 
-    public UserEntityBuilder() {
+    private UserEntityBuilder() {
         this.userEntity = new UserEntity();
+    }
+
+    public static UserEntityBuilder getInstance() {
+        return new UserEntityBuilder();
     }
 
     public UserEntityBuilder setFirstName(String firstName) {

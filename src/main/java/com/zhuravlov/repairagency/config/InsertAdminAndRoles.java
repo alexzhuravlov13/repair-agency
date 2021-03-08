@@ -74,7 +74,7 @@ public class InsertAdminAndRoles implements InitializingBean {
                                           int authorId,
                                           String description,
                                           Status status) {
-        RepairFormBuilder builder = new RepairFormBuilder()
+        RepairFormBuilder builder = RepairFormBuilder.getInstance()
                 .setCar(car)
                 .setShortDescription(shortDescription)
                 .setCreationDate(LocalDateTime.now())
@@ -112,7 +112,7 @@ public class InsertAdminAndRoles implements InitializingBean {
 
     private void initUser(String firstName, String lastName, String email, String role) {
 
-        UserEntity user = new UserEntityBuilder()
+        UserEntity user = UserEntityBuilder.getInstance()
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setEmail(email)
